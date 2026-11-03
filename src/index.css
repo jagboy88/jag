@@ -14,6 +14,10 @@
   body {
     @apply bg-jet text-ivory font-sans;
     -webkit-font-smoothing: antialiased;
+    /* The marquee and hero glow are wider than the viewport by design;
+       their sections clip them, and this guarantees the page never
+       scrolls sideways on narrow screens. */
+    overflow-x: clip;
   }
 
   ::selection {

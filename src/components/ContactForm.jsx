@@ -4,16 +4,19 @@ import { site } from '../data/site.js';
 import InstagramIcon from './icons/InstagramIcon.jsx';
 
 const projectTypes = [
-  'Brand Film',
-  'Commercial',
-  'Social Content',
-  'Event / Live',
-  'Music Video',
-  'Aerial / Real Estate',
-  'Something else',
+  'Full package (shoot + edit + social + ads)',
+  'Content shoot & editing',
+  'Social media management',
+  'Meta ads management',
+  'Not sure yet',
 ];
 
-const budgets = ['Under $5k', '$5k – $15k', '$15k – $50k', '$50k+'];
+const budgets = [
+  'Under $1.5k / mo',
+  '$1.5k – $3k / mo',
+  '$3k – $6k / mo',
+  '$6k+ / mo',
+];
 
 const initialForm = {
   name: '',
@@ -38,15 +41,15 @@ export default function ContactForm() {
    */
   const send = async (payload) => {
     const subject = encodeURIComponent(
-      `New project inquiry — ${payload.projectType} (${payload.name})`,
+      `New inquiry — ${payload.projectType} (${payload.name})`,
     );
     const body = encodeURIComponent(
       [
         `Name: ${payload.name}`,
         `Email: ${payload.email}`,
-        `Company: ${payload.company || '—'}`,
-        `Project type: ${payload.projectType}`,
-        `Budget: ${payload.budget}`,
+        `Business: ${payload.company || '—'}`,
+        `Looking for: ${payload.projectType}`,
+        `Monthly budget: ${payload.budget}`,
         '',
         payload.message,
       ].join('\n'),
@@ -73,11 +76,11 @@ export default function ContactForm() {
         <div className="lg:col-span-5">
           <p className="section-label mb-5">Contact</p>
           <h2 className="text-balance font-display text-5xl font-medium leading-none text-ivory md:text-7xl">
-            Let&apos;s make <span className="italic text-gold">something.</span>
+            Let&apos;s get you <span className="italic text-gold">on camera.</span>
           </h2>
           <p className="mt-8 max-w-sm font-sans text-sm font-light leading-relaxed text-ivory/60">
-            Tell us about the project, the deadline and the ambition. We reply
-            within one business day.
+            Tell us about your business and what you want more of — leads,
+            bookings, followers. We reply within one business day.
           </p>
 
           <dl className="mt-12 space-y-6 border-t border-ivory/10 pt-8">
@@ -166,7 +169,7 @@ export default function ContactForm() {
 
             <label className="block sm:col-span-2">
               <span className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">
-                Company
+                Business
               </span>
               <input
                 type="text"
@@ -174,20 +177,20 @@ export default function ContactForm() {
                 autoComplete="organization"
                 value={form.company}
                 onChange={update('company')}
-                placeholder="Brand or organisation"
+                placeholder="Business name and what you do"
                 className="input-luxe"
               />
             </label>
 
-            <label className="block">
+            <label className="block min-w-0">
               <span className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">
-                Project type
+                What you need
               </span>
               <select
                 name="projectType"
                 value={form.projectType}
                 onChange={update('projectType')}
-                className="input-luxe cursor-pointer appearance-none bg-jet"
+                className="input-luxe min-w-0 max-w-full cursor-pointer appearance-none truncate bg-jet"
               >
                 {projectTypes.map((type) => (
                   <option key={type} value={type} className="bg-jet text-ivory">
@@ -199,7 +202,7 @@ export default function ContactForm() {
 
             <fieldset className="block">
               <legend className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">
-                Budget
+                Monthly budget
               </legend>
               <div className="mt-4 flex flex-wrap gap-2">
                 {budgets.map((b) => {
@@ -238,7 +241,7 @@ export default function ContactForm() {
                 rows={5}
                 value={form.message}
                 onChange={update('message')}
-                placeholder="Goals, timeline, references, deliverables…"
+                placeholder="Your location, current socials, and what you'd like to see happen…"
                 className="input-luxe resize-none"
               />
             </label>

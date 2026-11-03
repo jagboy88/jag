@@ -6,8 +6,8 @@ export const site = {
   name: 'Impact Media GTA',
   shortName: 'Impact Media',
   region: 'Greater Toronto Area',
-  tagline: 'Cinematic stories for brands that move.',
-  email: 'hello@impactmediagta.com',
+  tagline: 'Content, social and ads for service businesses — done for you.',
+  email: 'contact@impactmediagroup.ca',
   instagram: {
     handle: '@impactmediagta',
     url: 'https://www.instagram.com/impactmediagta',
@@ -17,45 +17,76 @@ export const site = {
 export const navLinks = [
   { label: 'Work', href: '#work' },
   { label: 'Services', href: '#services' },
-  { label: 'About', href: '#about' },
+  { label: 'Process', href: '#process' },
   { label: 'Contact', href: '#contact' },
 ];
 
+/**
+ * The four pillars of the offer. Ordered the way a client experiences
+ * them: we come to you, we shoot, we edit, we run the channels.
+ */
 export const services = [
   {
     index: '01',
-    title: 'Brand Films',
+    title: 'On-Site Content Shoots',
     description:
-      'Long-form cinematic pieces that define who you are. Concept, script, direction and finishing under one roof.',
+      'We come to your business. Professional videographers capture your team, your space and your work in action — no studio, no downtime.',
   },
   {
     index: '02',
-    title: 'Commercials',
+    title: 'In-House Editing',
     description:
-      'Broadcast and digital spots engineered for attention — from 6-second bumpers to 60-second anthems.',
+      'Every clip is cut by our own team of highly trained editors. Colour, sound, captions and pacing tuned for how people actually scroll.',
   },
   {
     index: '03',
-    title: 'Social Content',
+    title: 'Social Media Management',
     description:
-      'Vertical-first series built for Instagram, TikTok and YouTube Shorts. Shot in volume, cut for retention.',
+      'We run your Instagram, TikTok, Facebook and YouTube end to end — posting schedule, captions, community replies and monthly reporting.',
   },
   {
     index: '04',
-    title: 'Events & Live',
+    title: 'Meta Ads',
     description:
-      'Multi-camera coverage, same-day highlight reels and live switching for conferences, launches and festivals.',
+      'Paid campaigns across Facebook and Instagram, built on the content we shoot for you. Targeting, creative testing and budget management handled.',
+  },
+];
+
+/**
+ * How an engagement runs, start to finish.
+ */
+export const process = [
+  {
+    step: '01',
+    title: 'We come to you',
+    description:
+      'A shoot day at your location. Our videographers plan the shot list around your services, your people and your customers.',
   },
   {
-    index: '05',
-    title: 'Music Videos',
+    step: '02',
+    title: 'We edit everything',
     description:
-      'Performance and narrative pieces for artists across the GTA, with colour and sound design that hit.',
+      'Footage goes straight to our editing team. You get a library of short-form videos, reels and ad creative — ready to post.',
   },
   {
-    index: '06',
-    title: 'Aerial & Real Estate',
+    step: '03',
+    title: 'We run your channels',
     description:
-      'Licensed drone cinematography and architectural walkthroughs for luxury listings and developments.',
+      'We publish, manage and grow your social accounts, and run Meta ad campaigns that turn the content into booked work.',
   },
+];
+
+/**
+ * The kinds of service businesses we work with. Shown as a typographic
+ * list — edit freely to match your real client base.
+ */
+export const industries = [
+  'Contractors & Trades',
+  'Clinics & Med Spas',
+  'Gyms & Studios',
+  'Salons & Barbershops',
+  'Real Estate Teams',
+  'Restaurants & Cafés',
+  'Auto Detailing & Shops',
+  'Law & Accounting Firms',
 ];

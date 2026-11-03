@@ -1,6 +1,8 @@
 # Impact Media GTA — Website
 
-Corporate website for **Impact Media GTA**, a media production company based in the Greater Toronto Area.
+Corporate website for **Impact Media GTA**, a Greater Toronto Area content agency for service-based businesses: on-site shoots with professional videographers, in-house editing, social media management and Meta ads.
+
+Contact: contact@impactmediagroup.ca · Instagram [@impactmediagta](https://www.instagram.com/impactmediagta)
 
 Luxury dark theme — Jet Black `#000000` · Bright White `#FFFFFF` · Premium Gold `#D4AF37`.
 No image files anywhere: the visual engine is built entirely from semantic HTML5 `<video>` players and typography.
@@ -30,14 +32,14 @@ src/
   App.jsx                   # Page assembly
   index.css                 # Tailwind layers + brand component classes
   data/
-    site.js                 # Brand constants, nav links, services copy
+    site.js                 # Brand constants, nav links, services / process / industries copy
     videos.js               # Video asset metadata for the reel
   components/
     Navbar.jsx              # Glassmorphism header, responsive drawer
     Hero.jsx                # Bold typographic hero
     VideoReel.jsx           # Infinite marquee of muted autoplay videos
     VideoModal.jsx          # Full-screen unmuted lightbox
-    Services.jsx            # Typography-forward capabilities list + About strip
+    Services.jsx            # Services list, 3-step process, industries strip
     ContactForm.jsx         # Inquiry form with gold accents
     Footer.jsx              # Links, Instagram, attribution
     icons/
@@ -74,4 +76,8 @@ Keep `id` unique — it drives React keys and lightbox selection. Use H.264 MP4 
 
 ## Brand constants
 
-All copy that identifies the company (name, region, email, Instagram `@impactmediagta`, nav links, service descriptions) lives in `src/data/site.js`.
+All copy that identifies the company (name, region, email, Instagram `@impactmediagta`, nav links, services, process steps, industries) lives in `src/data/site.js`.
+
+## Deploying
+
+`.github/workflows/deploy.yml` builds and publishes `dist/` to GitHub Pages. It is currently **manual-only** (Actions → Deploy to GitHub Pages → Run workflow). Before the first deploy, enable Pages once in the repo: **Settings → Pages → Source: GitHub Actions**. To deploy automatically on every push, add a `push: branches: [master]` trigger back to the workflow.

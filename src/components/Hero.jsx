@@ -1,14 +1,18 @@
 import { motion } from 'framer-motion';
 import { site } from '../data/site.js';
 
-const headline = ['We', 'make', 'brands', 'move.'];
+const headline = [
+  { text: 'We shoot.', accent: false },
+  { text: 'We edit.', accent: false },
+  { text: 'We run it.', accent: true },
+];
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+  show: { transition: { staggerChildren: 0.16, delayChildren: 0.2 } },
 };
 
-const word = {
+const line = {
   hidden: { opacity: 0, y: 40 },
   show: {
     opacity: 1,
@@ -40,24 +44,23 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.1 }}
           className="section-label mb-8"
         >
-          {site.name} &nbsp;·&nbsp; {site.region}
+          {site.name} &nbsp;·&nbsp; Content, social &amp; ads for service
+          businesses
         </motion.p>
 
         <motion.h1
           variants={container}
           initial="hidden"
           animate="show"
-          className="text-balance font-display text-[clamp(3.5rem,11vw,11rem)] font-medium leading-[0.9] tracking-tight text-ivory"
+          className="text-balance font-display text-[clamp(3.25rem,10vw,10rem)] font-medium leading-[0.92] tracking-tight text-ivory"
         >
-          {headline.map((w, i) => (
+          {headline.map((part) => (
             <motion.span
-              key={w}
-              variants={word}
-              className={`inline-block mr-[0.22em] ${
-                i === headline.length - 1 ? 'italic text-gold' : ''
-              }`}
+              key={part.text}
+              variants={line}
+              className={`block ${part.accent ? 'italic text-gold' : ''}`}
             >
-              {w}
+              {part.text}
             </motion.span>
           ))}
         </motion.h1>
@@ -66,18 +69,18 @@ export default function Hero() {
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
             className="max-w-md font-sans text-base font-light leading-relaxed text-ivory/70 md:col-span-6 lg:col-span-5"
           >
-            A Toronto-based production house crafting brand films, commercials
-            and social content with a cinematic edge. Every frame intentional.
-            Every cut earned.
+            We come to your business with professional videographers, edit
+            everything with our in-house team, then run your social media and
+            Meta ads. One team, start to finish, so you can stay on the tools.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.95 }}
+            transition={{ duration: 0.8, delay: 1.05 }}
             className="flex flex-wrap gap-4 md:col-span-6 md:justify-end lg:col-span-7"
           >
             <a href="#work" className="btn-gold-solid">
@@ -85,7 +88,7 @@ export default function Hero() {
               <span aria-hidden="true">→</span>
             </a>
             <a href="#contact" className="btn-gold">
-              Start a project
+              Book a shoot
             </a>
           </motion.div>
         </div>
