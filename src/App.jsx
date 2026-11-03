@@ -1,6 +1,10 @@
 import { MotionConfig } from 'framer-motion';
+import SmoothScroll from './components/SmoothScroll.jsx';
+import Preloader from './components/Preloader.jsx';
+import Cursor from './components/Cursor.jsx';
 import Navbar from './components/Navbar.jsx';
 import Hero from './components/Hero.jsx';
+import MarqueeBand from './components/MarqueeBand.jsx';
 import VideoReel from './components/VideoReel.jsx';
 import Services from './components/Services.jsx';
 import ContactForm from './components/ContactForm.jsx';
@@ -11,25 +15,34 @@ export default function App() {
     // reducedMotion="user" makes every Framer Motion transition respect the
     // OS-level prefers-reduced-motion setting automatically.
     <MotionConfig reducedMotion="user">
-      <div className="relative min-h-screen bg-jet text-ivory">
-        <a
-          href="#work"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-gold focus:px-4 focus:py-2 focus:font-sans focus:text-xs focus:uppercase focus:tracking-luxe focus:text-jet"
-        >
-          Skip to content
-        </a>
+      <SmoothScroll>
+        <Preloader />
+        <Cursor />
 
-        <Navbar />
+        <div className="relative min-h-screen bg-jet text-ivory">
+          <a
+            href="#work"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-gold focus:px-4 focus:py-2 focus:font-sans focus:text-xs focus:uppercase focus:tracking-luxe focus:text-jet"
+          >
+            Skip to content
+          </a>
 
-        <main>
-          <Hero />
-          <VideoReel />
-          <Services />
-          <ContactForm />
-        </main>
+          <Navbar />
 
-        <Footer />
-      </div>
+          <main>
+            <Hero />
+            <MarqueeBand />
+            <VideoReel />
+            <Services />
+            <ContactForm />
+          </main>
+
+          <Footer />
+        </div>
+
+        {/* Cinematic vignette over everything except overlays */}
+        <div aria-hidden="true" className="vignette" />
+      </SmoothScroll>
     </MotionConfig>
   );
 }

@@ -7,6 +7,11 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 export default [
   { ignores: ['dist', 'node_modules'] },
   {
+    // Build tooling runs under Node
+    files: ['vite.config.js', 'tailwind.config.js', 'postcss.config.js'],
+    languageOptions: { globals: globals.node },
+  },
+  {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2022,
@@ -34,5 +39,12 @@ export default [
         { allowConstantExport: true },
       ],
     },
+  },
+  {
+    // React Three Fiber maps JSX props straight onto Three.js objects
+    // (attach, args, wireframe, …) — they are not DOM attributes. Declared
+    // last so it overrides the shared rule set above.
+    files: ['src/components/three/**/*.jsx'],
+    rules: { 'react/no-unknown-property': 'off' },
   },
 ];

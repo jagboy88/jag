@@ -1,6 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// ARTIFACT=1 produces a single bundle (no lazy chunks) so the whole app can
+// be inlined into one HTML page for the claude.ai preview. The normal build
+// keeps Three.js and GSAP in their own cached chunks.
+const singleBundle = process.env.ARTIFACT === '1';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -14,5 +19,16 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    chunkSizeWarningLimit: 900,
+    rollupOptions: {
+      output: singleBundle
+        ? { inlineDynamicImports: true }
+        : {
+            manualChunks: {
+              three: ['three', '@react-three/fiber'],
+              motion: ['gsap', '@gsap/react', 'lenis', 'framer-motion'],
+            },
+          },
+    },
   },
 });

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { lockScroll } from '../lib/scrollLock.js';
 
 /**
  * Full-screen lightbox for a single reel item.
@@ -21,13 +22,12 @@ export default function VideoModal({ video, onClose }) {
       if (e.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', onKey);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    lockScroll(true);
     closeRef.current?.focus();
 
     return () => {
       document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = previousOverflow;
+      lockScroll(false);
     };
   }, [video, onClose]);
 

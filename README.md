@@ -11,7 +11,30 @@ No image files anywhere: the visual engine is built entirely from semantic HTML5
 
 - [React 18](https://react.dev) + [Vite 5](https://vitejs.dev)
 - [Tailwind CSS 3](https://tailwindcss.com)
-- [Framer Motion](https://www.framer.com/motion/) for entrance animations and the lightbox transitions
+- [Three.js](https://threejs.org) via [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) — hero particle scene (lazy-loaded chunk)
+- [GSAP 3](https://gsap.com) + ScrollTrigger + SplitText — intro, headline reveal, scroll reveals, pinned process, marquee band, tilt, magnetic CTAs, cursor
+- [Lenis](https://lenis.darkroom.engineering) — smooth scrolling
+- [Framer Motion](https://www.framer.com/motion/) — lightbox and mobile drawer transitions
+
+## Motion system
+
+| Piece | File | Notes |
+|---|---|---|
+| Intro preloader | `components/Preloader.jsx` | Counter + gold rule + curtain lift; once per session (`sessionStorage`) |
+| Hero 3D scene | `components/three/HeroScene.jsx` | 3000-point gold torus knot + dust, pointer parallax, pauses off-screen, `dpr ≤ 1.5` |
+| Headline reveal | `components/Hero.jsx` | SplitText chars flip in on a 3D axis after the intro |
+| Smooth scroll | `components/SmoothScroll.jsx` | Lenis driven by GSAP's ticker; overlays pause it via `lib/scrollLock.js` |
+| Marquee band | `components/MarqueeBand.jsx` | Infinite ticker; skews and speeds up with scroll velocity |
+| Pinned process | `components/Services.jsx` | Desktop (≥1024px) only: section pins, steps sweep horizontally with a gold progress line |
+| Reel tilt | `components/VideoReel.jsx` | 3D tilt toward the pointer, transform/scale only |
+| Magnetic CTAs | `components/MagneticLink.jsx` | Elastic pull, clamped to 0.3 so the hit box is never left |
+| Custom cursor | `components/Cursor.jsx` | Gold dot + ring; `data-cursor-label="Play"` shows a word inside |
+
+**Reduced motion:** every effect checks `prefers-reduced-motion`. With it on there is no preloader, no Lenis, no cursor, no tilt/magnetic, the marquees stop (the reel becomes hand-scrollable), Framer Motion is set to `reducedMotion="user"`, and the 3D scene draws a single static frame.
+
+**Pointer:** cursor, tilt and magnetic effects are enabled only for `(hover: hover) and (pointer: fine)` devices.
+
+**Sequencing:** `lib/intro.js` lets sections wait for the preloader curtain (`onIntroDone`). Import GSAP from `lib/gsap.js`, which registers the plugins once.
 
 ## Getting started
 
@@ -29,19 +52,30 @@ npm run lint
 index.html
 src/
   main.jsx                  # React entry
-  App.jsx                   # Page assembly
-  index.css                 # Tailwind layers + brand component classes
+  App.jsx                   # Page assembly (SmoothScroll → Preloader, Cursor, sections, vignette)
+  index.css                 # Tailwind layers, brand classes, cursor/vignette, reduced-motion rules
+  lib/
+    gsap.js                 # GSAP + plugin registration, reduced-motion / pointer helpers
+    intro.js                # Preloader → sections hand-off
+    scrollLock.js           # Shared scroll lock for overlays (pauses Lenis)
   data/
     site.js                 # Brand constants, nav links, services / process / industries copy
     videos.js               # Video asset metadata for the reel
   components/
-    Navbar.jsx              # Glassmorphism header, responsive drawer
-    Hero.jsx                # Bold typographic hero
-    VideoReel.jsx           # Infinite marquee of muted autoplay videos
+    SmoothScroll.jsx        # Lenis provider
+    Preloader.jsx           # Cinematic intro
+    Cursor.jsx              # Custom gold cursor
+    MagneticLink.jsx        # Magnetic CTA wrapper
+    Navbar.jsx              # Glassmorphism header, responsive drawer, sticky CTA
+    Hero.jsx                # 3D scene + SplitText headline
+    MarqueeBand.jsx         # Velocity-reactive ticker
+    VideoReel.jsx           # Infinite video marquee with 3D tilt tiles
     VideoModal.jsx          # Full-screen unmuted lightbox
-    Services.jsx            # Services list, 3-step process, industries strip
-    ContactForm.jsx         # Inquiry form with gold accents
-    Footer.jsx              # Links, Instagram, attribution
+    Services.jsx            # Services list, pinned horizontal process, industries, CTA
+    ContactForm.jsx         # Inquiry form with validation + error summary
+    Footer.jsx              # Parallax wordmark, links, Instagram
+    three/
+      HeroScene.jsx         # React Three Fiber particle knot
     icons/
       InstagramIcon.jsx     # Inline SVG glyph (no image assets)
 ```

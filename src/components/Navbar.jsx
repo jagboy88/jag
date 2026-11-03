@@ -1,9 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useGSAP } from '@gsap/react';
+import { gsap, prefersReducedMotion } from '../lib/gsap.js';
+import { onIntroDone } from '../lib/intro.js';
+import { lockScroll } from '../lib/scrollLock.js';
 import { navLinks, site } from '../data/site.js';
 import InstagramIcon from './icons/InstagramIcon.jsx';
+import MagneticLink from './MagneticLink.jsx';
 
 export default function Navbar() {
+  const header = useRef(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -14,18 +20,33 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Lock body scroll while the mobile drawer is open
+  // Lock scrolling while the mobile drawer is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    if (menuOpen) lockScroll(true);
     return () => {
-      document.body.style.overflow = '';
+      if (menuOpen) lockScroll(false);
     };
   }, [menuOpen]);
+
+  // Nav items drop in once the intro curtain lifts
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      const items = gsap.utils.toArray('[data-nav-item]', header.current);
+      gsap.set(items, { opacity: 0, y: -14 });
+      const unsubscribe = onIntroDone(() => {
+        gsap.to(items, { opacity: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'expo.out' });
+      });
+      return unsubscribe;
+    },
+    { scope: header },
+  );
 
   const closeMenu = () => setMenuOpen(false);
 
   return (
     <header
+      ref={header}
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
         scrolled
           ? 'border-b border-gold/20 bg-jet/60 backdrop-blur-xl backdrop-saturate-150'
@@ -40,6 +61,7 @@ export default function Navbar() {
         <a
           href="#top"
           onClick={closeMenu}
+          data-nav-item
           className="group flex items-baseline gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
         >
           <span className="font-display text-2xl font-semibold tracking-wide text-ivory">
@@ -53,7 +75,7 @@ export default function Navbar() {
         {/* Desktop links */}
         <ul className="hidden items-center gap-10 md:flex">
           {navLinks.map((link) => (
-            <li key={link.href}>
+            <li key={link.href} data-nav-item>
               <a
                 href={link.href}
                 className="relative font-sans text-xs uppercase tracking-luxe text-ivory/80 transition-colors duration-300 hover:text-ivory
@@ -64,7 +86,7 @@ export default function Navbar() {
               </a>
             </li>
           ))}
-          <li>
+          <li data-nav-item>
             <a
               href={site.instagram.url}
               target="_blank"
@@ -78,13 +100,15 @@ export default function Navbar() {
           </li>
           {/* Sticky nav CTA — the conversion pattern repeats this at the
               end of Process and in the contact section. */}
-          <li className="hidden lg:block">
-            <a
+          <li data-nav-item className="hidden lg:block">
+            <MagneticLink
               href="#contact"
-              className="flex min-h-touch items-center bg-gold px-5 font-sans text-[0.65rem] uppercase tracking-luxe text-jet transition-all duration-300 hover:bg-gold-soft hover:shadow-gold-soft"
+              strength={0.25}
+              data-cursor-label="Go"
+              className="flex min-h-touch items-center bg-gold px-5 font-sans text-[0.65rem] uppercase tracking-luxe text-jet transition-colors duration-300 hover:bg-gold-soft hover:shadow-gold-soft"
             >
               Book a shoot
-            </a>
+            </MagneticLink>
           </li>
         </ul>
 
@@ -95,6 +119,7 @@ export default function Navbar() {
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          data-nav-item
           className="relative flex min-h-touch min-w-touch items-center justify-center md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
         >
           <span
