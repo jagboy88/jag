@@ -63,8 +63,13 @@
 
   .input-luxe {
     @apply w-full border-0 border-b border-ivory/20 bg-transparent px-0 py-4 font-sans text-base text-ivory
-      placeholder:text-ivory/30 transition-colors duration-300
-      focus:border-gold focus:outline-none focus:ring-0;
+      placeholder:text-ivory/45 transition-colors duration-300
+      focus:border-gold focus:outline-none focus:ring-0
+      aria-[invalid=true]:border-gold-deep;
+  }
+
+  .field-error {
+    @apply mt-2 font-sans text-xs text-gold;
   }
 }
 
@@ -79,8 +84,21 @@
   }
 }
 
+/* Reduced motion: stop the marquee entirely and let the reel be scrolled
+   by hand instead. The duplicated clone set is hidden so items appear once. */
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee {
-    animation-duration: 180s;
+    animation: none;
+  }
+  .marquee-viewport {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .marquee-clone {
+    display: none;
+  }
+  .animate-pulse-gold,
+  .animate-fade-up {
+    animation: none;
   }
 }

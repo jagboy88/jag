@@ -70,10 +70,20 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Instagram ${site.instagram.handle}`}
-              className="flex items-center gap-2 border border-gold/60 px-4 py-2 font-sans text-[0.65rem] uppercase tracking-luxe text-gold transition-all duration-300 hover:border-gold hover:bg-gold hover:text-jet"
+              className="flex min-h-touch items-center gap-2 border border-gold/60 px-4 font-sans text-[0.65rem] uppercase tracking-luxe text-gold transition-all duration-300 hover:border-gold hover:bg-gold hover:text-jet"
             >
               <InstagramIcon className="h-3.5 w-3.5" />
               <span>{site.instagram.handle}</span>
+            </a>
+          </li>
+          {/* Sticky nav CTA — the conversion pattern repeats this at the
+              end of Process and in the contact section. */}
+          <li className="hidden lg:block">
+            <a
+              href="#contact"
+              className="flex min-h-touch items-center bg-gold px-5 font-sans text-[0.65rem] uppercase tracking-luxe text-jet transition-all duration-300 hover:bg-gold-soft hover:shadow-gold-soft"
+            >
+              Book a shoot
             </a>
           </li>
         </ul>
@@ -85,7 +95,7 @@ export default function Navbar() {
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          className="relative flex h-10 w-10 items-center justify-center md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+          className="relative flex min-h-touch min-w-touch items-center justify-center md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
         >
           <span
             className={`absolute h-px w-6 bg-gold transition-all duration-300 ${
@@ -138,18 +148,27 @@ export default function Navbar() {
               ))}
             </ul>
 
-            <a
-              href={site.instagram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between border-t border-gold/30 pt-6 font-sans text-xs uppercase tracking-luxe text-gold"
-            >
-              <span className="flex items-center gap-3">
-                <InstagramIcon className="h-4 w-4" />
-                {site.instagram.handle}
-              </span>
-              <span aria-hidden="true">↗</span>
-            </a>
+            <div className="flex flex-col gap-4 border-t border-gold/30 pt-6">
+              <a
+                href="#contact"
+                onClick={closeMenu}
+                className="btn-gold-solid min-h-touch w-full"
+              >
+                Book a shoot
+              </a>
+              <a
+                href={site.instagram.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-touch items-center justify-between font-sans text-xs uppercase tracking-luxe text-gold"
+              >
+                <span className="flex items-center gap-3">
+                  <InstagramIcon className="h-4 w-4" />
+                  {site.instagram.handle}
+                </span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { site } from '../data/site.js';
 import InstagramIcon from './icons/InstagramIcon.jsx';
@@ -27,12 +27,52 @@ const initialForm = {
   message: '',
 };
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Returns { fieldName: message } for every invalid field. */
+function validate(form) {
+  const errors = {};
+  if (!form.name.trim()) errors.name = 'Enter your name.';
+  if (!form.email.trim()) errors.email = 'Enter your email address.';
+  else if (!EMAIL_RE.test(form.email.trim()))
+    errors.email = 'Enter an email address in the format you@business.com.';
+  if (!form.message.trim())
+    errors.message = 'Tell us a little about your business.';
+  return errors;
+}
+
+const fieldLabels = {
+  name: 'Name',
+  email: 'Email',
+  message: 'Tell us about it',
+};
+
 export default function ContactForm() {
   const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | submitting | sent | error
+  const summaryRef = useRef(null);
 
-  const update = (field) => (e) =>
-    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  const errorKeys = Object.keys(errors);
+
+  // After a failed submit, move focus to the error summary so keyboard and
+  // screen-reader users land on it immediately.
+  useEffect(() => {
+    if (errorKeys.length > 0) summaryRef.current?.focus();
+  }, [errorKeys.length]);
+
+  const update = (field) => (e) => {
+    const value = e.target.value;
+    setForm((prev) => ({ ...prev, [field]: value }));
+    // Clear an inline error as soon as the field is corrected.
+    if (errors[field]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
 
   /**
    * Submission handler. Replace the body of `send()` with your own
@@ -59,6 +99,12 @@ export default function ContactForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    const nextErrors = validate(form);
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      setStatus('idle');
+      return;
+    }
     setStatus('submitting');
     try {
       await send(form);
@@ -68,6 +114,9 @@ export default function ContactForm() {
       setStatus('error');
     }
   };
+
+  const describedBy = (field) =>
+    errors[field] ? `${field}-error` : undefined;
 
   return (
     <section id="contact" className="relative py-24 lg:py-32">
@@ -91,7 +140,7 @@ export default function ContactForm() {
               <dd className="mt-1">
                 <a
                   href={`mailto:${site.email}`}
-                  className="font-display text-2xl text-ivory transition-colors hover:text-gold"
+                  className="inline-flex min-h-touch items-center break-all font-display text-2xl text-ivory transition-colors hover:text-gold"
                 >
                   {site.email}
                 </a>
@@ -106,7 +155,7 @@ export default function ContactForm() {
                   href={site.instagram.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 font-display text-2xl text-ivory transition-colors hover:text-gold"
+                  className="inline-flex min-h-touch items-center gap-3 font-display text-2xl text-ivory transition-colors hover:text-gold"
                 >
                   <InstagramIcon className="h-5 w-5 text-gold" />
                   {site.instagram.handle}
@@ -134,12 +183,46 @@ export default function ContactForm() {
           className="border border-gold/30 p-8 lg:col-span-7 lg:p-12"
           noValidate
         >
+          {/* Error summary — focusable, links to each invalid field */}
+          {errorKeys.length > 0 && (
+            <div
+              ref={summaryRef}
+              role="alert"
+              tabIndex={-1}
+              aria-labelledby="form-error-title"
+              className="mb-10 border border-gold/60 p-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            >
+              <p
+                id="form-error-title"
+                className="font-sans text-[0.65rem] uppercase tracking-luxe text-gold"
+              >
+                A few things need attention
+              </p>
+              <ul className="mt-3 space-y-2">
+                {errorKeys.map((key) => (
+                  <li key={key}>
+                    <a
+                      href={`#${key}`}
+                      className="inline-flex min-h-[24px] items-center font-sans text-sm text-ivory underline decoration-gold/60 underline-offset-4 hover:decoration-gold"
+                    >
+                      {fieldLabels[key]}: {errors[key]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div className="grid gap-8 sm:grid-cols-2">
-            <label className="block">
-              <span className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">
+            <div className="min-w-0">
+              <label
+                htmlFor="name"
+                className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold"
+              >
                 Name *
-              </span>
+              </label>
               <input
+                id="name"
                 type="text"
                 name="name"
                 required
@@ -147,31 +230,53 @@ export default function ContactForm() {
                 value={form.name}
                 onChange={update('name')}
                 placeholder="Your full name"
+                aria-invalid={Boolean(errors.name)}
+                aria-describedby={describedBy('name')}
                 className="input-luxe"
               />
-            </label>
+              {errors.name && (
+                <p id="name-error" className="field-error">
+                  {errors.name}
+                </p>
+              )}
+            </div>
 
-            <label className="block">
-              <span className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">
+            <div className="min-w-0">
+              <label
+                htmlFor="email"
+                className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold"
+              >
                 Email *
-              </span>
+              </label>
               <input
+                id="email"
                 type="email"
                 name="email"
                 required
                 autoComplete="email"
                 value={form.email}
                 onChange={update('email')}
-                placeholder="you@company.com"
+                placeholder="you@business.com"
+                aria-invalid={Boolean(errors.email)}
+                aria-describedby={describedBy('email')}
                 className="input-luxe"
               />
-            </label>
+              {errors.email && (
+                <p id="email-error" className="field-error">
+                  {errors.email}
+                </p>
+              )}
+            </div>
 
-            <label className="block sm:col-span-2">
-              <span className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">
+            <div className="min-w-0 sm:col-span-2">
+              <label
+                htmlFor="company"
+                className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold"
+              >
                 Business
-              </span>
+              </label>
               <input
+                id="company"
                 type="text"
                 name="company"
                 autoComplete="organization"
@@ -180,17 +285,21 @@ export default function ContactForm() {
                 placeholder="Business name and what you do"
                 className="input-luxe"
               />
-            </label>
+            </div>
 
-            <label className="block min-w-0">
-              <span className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">
+            <div className="min-w-0">
+              <label
+                htmlFor="projectType"
+                className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold"
+              >
                 What you need
-              </span>
+              </label>
               <select
+                id="projectType"
                 name="projectType"
                 value={form.projectType}
                 onChange={update('projectType')}
-                className="input-luxe min-w-0 max-w-full cursor-pointer appearance-none truncate bg-jet"
+                className="input-luxe min-h-touch min-w-0 max-w-full cursor-pointer appearance-none truncate bg-jet"
               >
                 {projectTypes.map((type) => (
                   <option key={type} value={type} className="bg-jet text-ivory">
@@ -198,9 +307,9 @@ export default function ContactForm() {
                   </option>
                 ))}
               </select>
-            </label>
+            </div>
 
-            <fieldset className="block">
+            <fieldset className="min-w-0">
               <legend className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">
                 Monthly budget
               </legend>
@@ -210,10 +319,10 @@ export default function ContactForm() {
                   return (
                     <label
                       key={b}
-                      className={`cursor-pointer border px-3 py-2 font-sans text-[0.65rem] uppercase tracking-wider transition-all duration-300 ${
+                      className={`inline-flex min-h-touch cursor-pointer items-center border px-3 font-sans text-[0.65rem] uppercase tracking-wider transition-all duration-300 ${
                         selected
                           ? 'border-gold bg-gold text-jet'
-                          : 'border-ivory/20 text-ivory/70 hover:border-gold hover:text-gold'
+                          : 'border-ivory/20 text-ivory/80 hover:border-gold hover:text-gold'
                       }`}
                     >
                       <input
@@ -231,27 +340,38 @@ export default function ContactForm() {
               </div>
             </fieldset>
 
-            <label className="block sm:col-span-2">
-              <span className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">
+            <div className="min-w-0 sm:col-span-2">
+              <label
+                htmlFor="message"
+                className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold"
+              >
                 Tell us about it *
-              </span>
+              </label>
               <textarea
+                id="message"
                 name="message"
                 required
                 rows={5}
                 value={form.message}
                 onChange={update('message')}
                 placeholder="Your location, current socials, and what you'd like to see happen…"
+                aria-invalid={Boolean(errors.message)}
+                aria-describedby={describedBy('message')}
                 className="input-luxe resize-none"
               />
-            </label>
+              {errors.message && (
+                <p id="message-error" className="field-error">
+                  {errors.message}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p
               role="status"
               aria-live="polite"
-              className="font-sans text-xs text-ivory/50"
+              className="font-sans text-xs text-ivory/60"
             >
               {status === 'sent' && (
                 <span className="text-gold">
@@ -270,7 +390,7 @@ export default function ContactForm() {
             <button
               type="submit"
               disabled={status === 'submitting'}
-              className="btn-gold-solid disabled:cursor-not-allowed disabled:opacity-60"
+              className="btn-gold-solid min-h-touch disabled:cursor-not-allowed disabled:opacity-60"
             >
               Send inquiry
               <span aria-hidden="true">→</span>

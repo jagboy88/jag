@@ -33,7 +33,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      className="font-sans text-sm text-ivory/70 transition-colors hover:text-gold"
+                      className="inline-flex min-h-[32px] items-center font-sans text-sm text-ivory/70 transition-colors hover:text-gold"
                     >
                       {link.label}
                     </a>
@@ -50,7 +50,7 @@ export default function Footer() {
                 <li>
                   <a
                     href={`mailto:${site.email}`}
-                    className="break-all font-sans text-sm text-ivory/70 transition-colors hover:text-gold"
+                    className="inline-flex min-h-[32px] items-center break-all font-sans text-sm text-ivory/70 transition-colors hover:text-gold"
                   >
                     {site.email}
                   </a>
@@ -69,7 +69,7 @@ export default function Footer() {
                 href={site.instagram.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group mt-5 inline-flex items-center gap-3 border border-gold/50 px-4 py-3 font-sans text-xs uppercase tracking-luxe text-gold transition-all duration-300 hover:border-gold hover:bg-gold hover:text-jet"
+                className="group mt-5 inline-flex min-h-touch items-center gap-3 border border-gold/50 px-4 font-sans text-xs uppercase tracking-luxe text-gold transition-all duration-300 hover:border-gold hover:bg-gold hover:text-jet"
               >
                 <InstagramIcon className="h-4 w-4" />
                 {site.instagram.handle}
@@ -81,7 +81,7 @@ export default function Footer() {
         <div className="gold-hairline mt-16" />
 
         {/* Legal row */}
-        <div className="mt-8 flex flex-col gap-4 font-sans text-[0.65rem] uppercase tracking-luxe text-ivory/40 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-4 font-sans text-[0.65rem] uppercase tracking-luxe text-ivory/60 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {site.name}. All rights reserved.
           </p>

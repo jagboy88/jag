@@ -83,12 +83,12 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 1.05 }}
             className="flex flex-wrap gap-4 md:col-span-6 md:justify-end lg:col-span-7"
           >
-            <a href="#work" className="btn-gold-solid">
-              Watch the reel
+            <a href="#contact" className="btn-gold-solid min-h-touch">
+              Book a shoot
               <span aria-hidden="true">→</span>
             </a>
-            <a href="#contact" className="btn-gold">
-              Book a shoot
+            <a href="#work" className="btn-gold min-h-touch">
+              Watch the reel
             </a>
           </motion.div>
         </div>

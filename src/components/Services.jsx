@@ -116,6 +116,18 @@ export default function Services() {
               ))}
             </ul>
           </div>
+
+          {/* Mid-page CTA — repeats the primary action after the features */}
+          <div className="mt-20 flex flex-col gap-8 border-t border-gold/30 pt-12 md:flex-row md:items-end md:justify-between">
+            <p className="max-w-xl text-balance font-display text-3xl leading-tight text-ivory md:text-5xl">
+              One shoot day. A month of content.{' '}
+              <span className="italic text-gold">Your phone stays in your pocket.</span>
+            </p>
+            <a href="#contact" className="btn-gold-solid min-h-touch shrink-0">
+              Book a shoot
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
       </section>
     </>

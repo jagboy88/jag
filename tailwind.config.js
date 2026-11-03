@@ -14,10 +14,16 @@ export default {
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
         luxe: '0.35em',
+      },
+      minHeight: {
+        touch: '44px',
+      },
+      minWidth: {
+        touch: '44px',
       },
       boxShadow: {
         gold: '0 0 0 1px #D4AF37, 0 0 28px 2px rgba(212, 175, 55, 0.55)',
