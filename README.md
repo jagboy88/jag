@@ -114,4 +114,6 @@ All copy that identifies the company (name, region, email, Instagram `@impactmed
 
 ## Deploying
 
-`.github/workflows/deploy.yml` builds and publishes `dist/` to GitHub Pages. It is currently **manual-only** (Actions → Deploy to GitHub Pages → Run workflow). Before the first deploy, enable Pages once in the repo: **Settings → Pages → Source: GitHub Actions**. To deploy automatically on every push, add a `push: branches: [master]` trigger back to the workflow.
+Live at **https://jagboy88.github.io/jag/**
+
+`.github/workflows/deploy.yml` builds and publishes `dist/` to GitHub Pages on **every push to `master`** (and can be run manually from the Actions tab). Pages is configured with **Settings → Pages → Source: GitHub Actions**.

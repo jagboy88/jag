@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
-# Manual deploys only while the site is in development. Re-add a
-# `push: branches: [master]` trigger here when it is ready to go live.
 on:
+  push:
+    branches: [master]
   workflow_dispatch:
 
 permissions:
