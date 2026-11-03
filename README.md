@@ -5,7 +5,7 @@ Corporate website for **Impact Media GTA**, a Greater Toronto Area content agenc
 Contact: contact@impactmediagroup.ca · Instagram [@impactmediagta](https://www.instagram.com/impactmediagta)
 
 Luxury dark theme — Jet Black `#000000` · Bright White `#FFFFFF` · Premium Gold `#D4AF37`.
-Typography — **Bodoni Moda** (display, optical-size axis) + **Jost** (body/labels), the "Luxury Minimalist" pairing from the UI/UX Pro Max typography database.
+Typography — **Instrument Serif** (display) + **Jost** (body/labels), chosen with the UI/UX Pro Max typography and Google Fonts databases.
 No image files anywhere: the visual engine is built entirely from semantic HTML5 `<video>` players and typography.
 
 ## Stack

@@ -77,7 +77,7 @@ export default function Services() {
           <div className="mb-16 grid gap-8 lg:grid-cols-12">
             <div data-reveal className="lg:col-span-5">
               <p className="section-label mb-5">What we do</p>
-              <h2 className="text-balance font-display text-5xl font-medium leading-none text-ivory md:text-7xl">
+              <h2 className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
                 Done-for-you{' '}
                 <span className="italic text-gold">content &amp; growth.</span>
               </h2>
@@ -136,7 +136,7 @@ export default function Services() {
             <div data-reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="section-label mb-5">How it works</p>
-                <h2 className="text-balance font-display text-4xl font-medium leading-tight text-ivory md:text-6xl">
+                <h2 className="text-balance font-display text-4xl font-normal leading-tight text-ivory md:text-6xl">
                   Three steps. <br />
                   <span className="italic text-gold">Zero on your plate.</span>
                 </h2>

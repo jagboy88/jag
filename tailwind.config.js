@@ -13,10 +13,10 @@ export default {
         },
       },
       fontFamily: {
-        // Bodoni Moda: high-contrast Didone with an optical-size axis, so
-        // hairlines stay visible on black at small sizes and get razor-thin
-        // at display sizes. Jost: Futura-style geometric for body and labels.
-        display: ['"Bodoni Moda"', '"Bodoni 72"', 'Didot', 'Georgia', 'serif'],
+        // Instrument Serif: a display serif drawn for large sizes with tight,
+        // even letterfit and a strong italic (regular + italic only — headings
+        // should not ask for weights above 400). Jost: geometric body/labels.
+        display: ['"Instrument Serif"', '"Times New Roman"', 'Georgia', 'serif'],
         sans: ['Jost', 'Futura', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {

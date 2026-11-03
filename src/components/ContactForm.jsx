@@ -124,7 +124,7 @@ export default function ContactForm() {
         {/* Left column */}
         <div className="lg:col-span-5">
           <p className="section-label mb-5">Contact</p>
-          <h2 className="text-balance font-display text-5xl font-medium leading-none text-ivory md:text-7xl">
+          <h2 className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
             Let&apos;s get you <span className="italic text-gold">on camera.</span>
           </h2>
           <p className="mt-8 max-w-sm font-sans text-sm font-light leading-relaxed text-ivory/60">

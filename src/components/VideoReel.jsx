@@ -163,7 +163,7 @@ export default function VideoReel() {
       <div className="mx-auto mb-14 flex max-w-7xl flex-col gap-6 px-6 lg:flex-row lg:items-end lg:justify-between lg:px-10">
         <div data-reveal>
           <p className="section-label mb-5">Our Work</p>
-          <h2 className="text-balance font-display text-5xl font-medium leading-none text-ivory md:text-7xl">
+          <h2 className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
             A 360° look at <span className="italic text-gold">the reel.</span>
           </h2>
         </div>

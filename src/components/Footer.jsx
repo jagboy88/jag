@@ -37,7 +37,7 @@ export default function Footer() {
           <div className="lg:col-span-6">
             <p
               ref={wordmark}
-              className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-medium leading-[0.95] text-ivory will-change-transform"
+              className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-normal leading-[0.95] text-ivory will-change-transform"
             >
               Impact Media
               <span className="block italic text-gold">GTA</span>

@@ -121,7 +121,7 @@ export default function Hero() {
 
         <h1
           ref={h1}
-          className="hero-h1 text-balance font-display text-[clamp(3.25rem,10vw,10rem)] font-medium leading-[0.92] tracking-tight text-ivory"
+          className="hero-h1 text-balance font-display text-[clamp(3.25rem,10vw,10rem)] font-normal leading-[0.92] tracking-[-0.015em] text-ivory"
         >
           {headline.map((part) => (
             <span
