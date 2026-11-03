@@ -13,8 +13,11 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        sans: ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // Bodoni Moda: high-contrast Didone with an optical-size axis, so
+        // hairlines stay visible on black at small sizes and get razor-thin
+        // at display sizes. Jost: Futura-style geometric for body and labels.
+        display: ['"Bodoni Moda"', '"Bodoni 72"', 'Didot', 'Georgia', 'serif'],
+        sans: ['Jost', 'Futura', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       letterSpacing: {
         luxe: '0.35em',

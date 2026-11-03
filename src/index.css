@@ -14,6 +14,7 @@
   body {
     @apply bg-jet text-ivory font-sans;
     -webkit-font-smoothing: antialiased;
+    font-optical-sizing: auto;
     /* The marquee and hero scene are wider than the viewport by design;
        their sections clip them, and this guarantees the page never
        scrolls sideways on narrow screens. */
@@ -125,7 +126,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: Montserrat, ui-sans-serif, system-ui, sans-serif;
+    font-family: Jost, Futura, ui-sans-serif, system-ui, sans-serif;
     font-size: 5px;
     font-weight: 600;
     letter-spacing: 0.2em;
