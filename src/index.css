@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    background-color: #000000;
+  }
+
+  body {
+    @apply bg-jet text-ivory font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: #d4af37;
+    color: #000000;
+  }
+
+  /* Gold hairline scrollbar to keep the chrome on-brand */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #000000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d4af37;
+    border-radius: 9999px;
+  }
+}
+
+@layer components {
+  .section-label {
+    @apply font-sans text-[0.7rem] uppercase tracking-luxe text-gold;
+  }
+
+  .gold-hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-gold to-transparent;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-3 border border-gold px-8 py-4
+      font-sans text-xs uppercase tracking-luxe text-gold transition-all duration-300
+      hover:bg-gold hover:text-jet hover:shadow-gold-soft
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-jet;
+  }
+
+  .btn-gold-solid {
+    @apply inline-flex items-center justify-center gap-3 bg-gold px-8 py-4
+      font-sans text-xs uppercase tracking-luxe text-jet transition-all duration-300
+      hover:bg-gold-soft hover:shadow-gold-soft
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-jet;
+  }
+
+  .input-luxe {
+    @apply w-full border-0 border-b border-ivory/20 bg-transparent px-0 py-4 font-sans text-base text-ivory
+      placeholder:text-ivory/30 transition-colors duration-300
+      focus:border-gold focus:outline-none focus:ring-0;
+  }
+}
+
+@layer utilities {
+  /* Pause the marquee track — toggled while the modal is open or on hover */
+  .marquee-paused {
+    animation-play-state: paused !important;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation-duration: 180s;
+  }
+}
