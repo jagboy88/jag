@@ -2,9 +2,16 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '../lib/gsap.js';
 import { navLinks, site } from '../data/site.js';
+import { faqPage, industryPages, servicePages } from '../data/pages.js';
 import InstagramIcon from './icons/InstagramIcon.jsx';
 
-export default function Footer() {
+const resolveHref = (href, isHome) =>
+  href.startsWith('#') && href !== '#contact' && !isHome ? `/${href}` : href;
+
+const linkClass =
+  'inline-flex min-h-[32px] items-center font-sans text-sm text-ivory/70 transition-colors hover:text-gold';
+
+export default function Footer({ isHome = true }) {
   const root = useRef(null);
   const wordmark = useRef(null);
   const year = new Date().getFullYear();
@@ -47,24 +54,47 @@ export default function Footer() {
             </p>
           </div>
 
-          <nav aria-label="Footer" className="grid grid-cols-2 gap-10 lg:col-span-6 lg:grid-cols-3">
+          <nav aria-label="Footer" className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-6">
             <div data-footer-col>
-              <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">Navigate</p>
+              <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">Services</p>
               <ul className="mt-5 space-y-3">
-                {navLinks.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      className="inline-flex min-h-[32px] items-center font-sans text-sm text-ivory/70 transition-colors hover:text-gold"
-                    >
-                      {link.label}
-                    </a>
+                {servicePages.map((p) => (
+                  <li key={p.path}>
+                    <a href={p.path} className={linkClass}>{p.navLabel}</a>
                   </li>
                 ))}
               </ul>
             </div>
 
             <div data-footer-col>
+              <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">Industries</p>
+              <ul className="mt-5 space-y-3">
+                {industryPages.map((p) => (
+                  <li key={p.path}>
+                    <a href={p.path} className={linkClass}>{p.navLabel}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div data-footer-col>
+              <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">Navigate</p>
+              <ul className="mt-5 space-y-3">
+                <li>
+                  <a href="/" className={linkClass}>Home</a>
+                </li>
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <a href={resolveHref(link.href, isHome)} className={linkClass}>{link.label}</a>
+                  </li>
+                ))}
+                <li>
+                  <a href={faqPage.path} className={linkClass}>FAQ</a>
+                </li>
+              </ul>
+            </div>
+
+            <div data-footer-col className="col-span-2">
               <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">Contact</p>
               <ul className="mt-5 space-y-3">
                 <li>
@@ -79,7 +109,7 @@ export default function Footer() {
               </ul>
             </div>
 
-            <div data-footer-col className="col-span-2 lg:col-span-1">
+            <div data-footer-col className="col-span-2 sm:col-span-1">
               <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">Follow</p>
               <a
                 href={site.instagram.url}

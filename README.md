@@ -17,6 +17,19 @@ No image files anywhere: the visual engine is built entirely from semantic HTML5
 - [Lenis](https://lenis.darkroom.engineering) — smooth scrolling
 - [Framer Motion](https://www.framer.com/motion/) — lightbox and mobile drawer transitions
 
+## Pages
+
+| URL | Source |
+|---|---|
+| `/` | `src/pages/HomePage.jsx` |
+| `/services/video-production/`, `/services/video-editing/`, `/services/social-media-management/`, `/services/meta-ads/` | `src/data/pages.js` → `servicePages` |
+| `/industries/auto-detailing/`, `/industries/cosmetic-clinics/`, `/industries/landscaping/` | `src/data/pages.js` → `industryPages` |
+| `/faq/` | `src/data/pages.js` → `faqPage` |
+
+Every content page uses `src/pages/ContentPage.jsx`. **To add a page, add an entry to `src/data/pages.js`.** The build generates its HTML file, `<head>` tags, JSON-LD (Service, BreadcrumbList, FAQPage) and sitemap entry automatically (`src/lib/seo.js`, `scripts/prerender.mjs`). Add it to `public/llms.txt` by hand. The published starting price lives in `src/data/site.js` → `pricing`.
+
+Links between pages are plain `<a href>`; each URL is its own prerendered HTML file that hydrates with `App path={location.pathname}`.
+
 ## Build pipeline & prerendering
 
 `npm run build` runs three steps:

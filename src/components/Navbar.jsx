@@ -8,7 +8,11 @@ import { cta, navLinks, site } from '../data/site.js';
 import InstagramIcon from './icons/InstagramIcon.jsx';
 import MagneticLink from './MagneticLink.jsx';
 
-export default function Navbar() {
+/** Section anchors live on the homepage; from other pages link to /#section. */
+const resolveHref = (href, isHome) =>
+  href.startsWith('#') && href !== '#contact' && !isHome ? `/${href}` : href;
+
+export default function Navbar({ isHome = true }) {
   const header = useRef(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -59,7 +63,7 @@ export default function Navbar() {
       >
         {/* Brand */}
         <a
-          href="#top"
+          href={isHome ? '#top' : '/'}
           onClick={closeMenu}
           data-nav-item
           className="group flex items-baseline gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
@@ -77,7 +81,7 @@ export default function Navbar() {
           {navLinks.map((link) => (
             <li key={link.href} data-nav-item>
               <a
-                href={link.href}
+                href={resolveHref(link.href, isHome)}
                 className="relative font-sans text-xs uppercase tracking-luxe text-ivory/80 transition-colors duration-300 hover:text-ivory
                   after:absolute after:-bottom-2 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300
                   hover:after:w-full focus-visible:outline-none focus-visible:text-gold"
@@ -170,7 +174,7 @@ export default function Navbar() {
                   transition={{ delay: 0.08 * i, duration: 0.4 }}
                 >
                   <a
-                    href={link.href}
+                    href={resolveHref(link.href, isHome)}
                     onClick={closeMenu}
                     className="flex items-baseline gap-4 font-display text-4xl text-ivory transition-colors hover:text-gold"
                   >

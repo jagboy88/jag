@@ -28,6 +28,14 @@ export const cta = {
   submit: 'Request my free plan',
 };
 
+/** Published starting price. Update `line` if it should say per month. */
+export const pricing = {
+  from: '$1,000 CAD',
+  min: 1000,
+  currency: 'CAD',
+  line: 'Packages start at $1,000 CAD.',
+};
+
 export const navLinks = [
   { label: 'Work', href: '#work' },
   { label: 'Services', href: '#services' },
@@ -43,24 +51,28 @@ export const services = [
   {
     index: '01',
     title: 'On-Site Content Shoots',
+    href: '/services/video-production/',
     description:
       'We come to your business. Professional videographers capture your team, your space and your work in action — no studio, no downtime.',
   },
   {
     index: '02',
     title: 'In-House Editing',
+    href: '/services/video-editing/',
     description:
       'Every clip is cut by our own team of highly trained editors. Colour, sound, captions and pacing tuned for how people actually scroll.',
   },
   {
     index: '03',
     title: 'Social Media Management',
+    href: '/services/social-media-management/',
     description:
       'We run your Instagram, TikTok, Facebook and YouTube end to end — posting schedule, captions, community replies and monthly reporting.',
   },
   {
     index: '04',
     title: 'Meta Ads',
+    href: '/services/meta-ads/',
     description:
       'Paid campaigns across Facebook and Instagram, built on the content we shoot for you. Targeting, creative testing and budget management handled.',
   },
@@ -95,12 +107,12 @@ export const process = [
  * list — edit freely to match your real client base.
  */
 export const industries = [
-  'Contractors & Trades',
-  'Clinics & Med Spas',
-  'Gyms & Studios',
-  'Salons & Barbershops',
-  'Real Estate Teams',
-  'Restaurants & Cafés',
-  'Auto Detailing & Shops',
-  'Law & Accounting Firms',
+  { name: 'Auto Detailing', href: '/industries/auto-detailing/' },
+  { name: 'Cosmetic Clinics & Med Spas', href: '/industries/cosmetic-clinics/' },
+  { name: 'Landscaping & Hardscaping', href: '/industries/landscaping/' },
+  { name: 'Contractors & Trades' },
+  { name: 'Gyms & Studios' },
+  { name: 'Salons & Barbershops' },
+  { name: 'Real Estate Teams' },
+  { name: 'Restaurants & Cafés' },
 ];

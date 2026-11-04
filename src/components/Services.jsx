@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '../lib/gsap.js';
-import { cta, industries, process, services } from '../data/site.js';
+import { cta, industries, pricing, process, services } from '../data/site.js';
 import MagneticLink from './MagneticLink.jsx';
 
 export default function Services() {
@@ -90,7 +90,8 @@ export default function Services() {
             >
               Built for service-based businesses. We handle the filming, the
               editing, the posting and the ads, so the only thing on your plate
-              is the work that comes in.
+              is the work that comes in.{' '}
+              <span className="text-gold">{pricing.line}</span>
             </p>
           </div>
 
@@ -111,7 +112,10 @@ export default function Services() {
                   {service.index}
                 </span>
                 <h3 className="font-display text-3xl text-ivory transition-all duration-500 group-hover:translate-x-3 group-hover:text-gold md:col-span-5 md:text-5xl">
-                  {service.title}
+                  {/* The link's ::after covers the whole row, so every row is clickable */}
+                  <a href={service.href} className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:underline">
+                    {service.title}
+                  </a>
                 </h3>
                 <p className="relative font-sans text-sm font-light leading-relaxed text-ivory/60 md:col-span-5">
                   {service.description}
@@ -193,10 +197,16 @@ export default function Services() {
             <ul className="flex flex-wrap gap-x-8 gap-y-3 lg:col-span-9">
               {industries.map((industry) => (
                 <li
-                  key={industry}
+                  key={industry.name}
                   className="font-display text-2xl text-ivory/80 transition-colors duration-300 hover:text-gold md:text-3xl"
                 >
-                  {industry}
+                  {industry.href ? (
+                    <a href={industry.href} className="text-ivory underline decoration-gold/50 decoration-1 underline-offset-[6px] hover:decoration-gold">
+                      {industry.name}
+                    </a>
+                  ) : (
+                    industry.name
+                  )}
                 </li>
               ))}
             </ul>

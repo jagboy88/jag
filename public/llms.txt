@@ -4,6 +4,10 @@
 
 Also known as Impact Media Group. Based in Toronto; serves the Greater Toronto Area, including Mississauga, Vaughan, Markham and Brampton.
 
+## Pricing
+
+Packages start at $1,000 CAD.
+
 ## Services
 
 - On-site content shoots: professional videographers film at the client's location — their team, space and work in action. No studio needed.
@@ -19,7 +23,7 @@ Also known as Impact Media Group. Based in Toronto; serves the Greater Toronto A
 
 ## Who it works with
 
-Service businesses, including contractors and trades, clinics and med spas, gyms and fitness studios, salons and barbershops, real estate teams, restaurants and cafés, auto detailing and repair shops, and law and accounting firms.
+Service businesses, including auto detailers, cosmetic clinics and med spas, landscaping and hardscaping companies, contractors and trades, gyms and fitness studios, salons and barbershops, real estate teams, and restaurants and cafés.
 
 ## Contact
 
@@ -31,4 +35,12 @@ Service businesses, including contractors and trades, clinics and med spas, gyms
 ## Pages
 
 - [Home](https://impactmediagroup.ca/): services, work reel, process, industries and contact form
+- [On-site video production](https://impactmediagroup.ca/services/video-production/)
+- [Short-form video editing](https://impactmediagroup.ca/services/video-editing/)
+- [Social media management](https://impactmediagroup.ca/services/social-media-management/)
+- [Facebook and Instagram ads](https://impactmediagroup.ca/services/meta-ads/)
+- [Video marketing for auto detailers](https://impactmediagroup.ca/industries/auto-detailing/)
+- [Video marketing for cosmetic clinics and med spas](https://impactmediagroup.ca/industries/cosmetic-clinics/)
+- [Video marketing for landscapers](https://impactmediagroup.ca/industries/landscaping/)
+- [Frequently asked questions](https://impactmediagroup.ca/faq/)
 - [Sitemap](https://impactmediagroup.ca/sitemap.xml)

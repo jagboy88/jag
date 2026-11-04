@@ -9,9 +9,9 @@ const singleBundle = process.env.ARTIFACT === '1';
 // https://vitejs.dev/config/
 export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react()],
-  // Relative asset paths so the build works at the domain root, under
-  // GitHub Pages' /jag/ sub-path, and when the HTML is embedded elsewhere.
-  base: './',
+  // Absolute asset paths: pages live at nested URLs (/services/…/), so
+  // assets must resolve from the domain root (impactmediagroup.ca).
+  base: '/',
   server: {
     port: 5173,
     open: false,

@@ -31,7 +31,7 @@ function remember() {
  * a day per browser; never under reduced motion. Renders nothing on the
  * server and decides on the client so prerendered HTML stays identical.
  */
-export default function Preloader() {
+export default function Preloader({ enabled = true }) {
   const [show, setShow] = useState(null); // null = undecided (SSR / first paint)
   const root = useRef(null);
   const counter = useRef(null);
@@ -39,8 +39,8 @@ export default function Preloader() {
   const word = useRef(null);
 
   useEffect(() => {
-    setShow(!prefersReducedMotion() && !seenRecently());
-  }, []);
+    setShow(enabled && !prefersReducedMotion() && !seenRecently());
+  }, [enabled]);
 
   useEffect(() => {
     if (show === false) markIntroDone();

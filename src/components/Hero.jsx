@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap, SplitText, prefersReducedMotion } from '../lib/gsap.js';
 import { onIntroDone } from '../lib/intro.js';
-import { cta } from '../data/site.js';
+import { cta, pricing } from '../data/site.js';
 import MagneticLink from './MagneticLink.jsx';
 
 // WebGL is the heaviest thing on the page — split it out so the first
@@ -173,7 +173,9 @@ export default function Hero() {
                 Watch the reel
               </MagneticLink>
             </div>
-            <p className="font-sans text-xs text-ivory/60 md:text-right">{cta.subline}</p>
+            <p className="font-sans text-xs text-ivory/60 md:text-right">
+              {cta.subline} <span className="text-gold">{pricing.line}</span>
+            </p>
           </div>
         </div>
       </div>

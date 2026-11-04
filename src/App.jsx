@@ -3,20 +3,26 @@ import SmoothScroll from './components/SmoothScroll.jsx';
 import Preloader from './components/Preloader.jsx';
 import Cursor from './components/Cursor.jsx';
 import Navbar from './components/Navbar.jsx';
-import Hero from './components/Hero.jsx';
-import MarqueeBand from './components/MarqueeBand.jsx';
-import VideoReel from './components/VideoReel.jsx';
-import Services from './components/Services.jsx';
-import ContactForm from './components/ContactForm.jsx';
 import Footer from './components/Footer.jsx';
+import HomePage from './pages/HomePage.jsx';
+import ContentPage from './pages/ContentPage.jsx';
+import { findRoute, pageByPath } from './data/pages.js';
 
-export default function App() {
+/**
+ * Each URL is prerendered to its own HTML file (scripts/prerender.mjs) and
+ * hydrated here with the same path, so links between pages are plain
+ * <a href> navigations.
+ */
+export default function App({ path = '/' }) {
+  const route = findRoute(path);
+  const isHome = route.kind === 'home';
+
   return (
     // reducedMotion="user" makes every Framer Motion transition respect the
     // OS-level prefers-reduced-motion setting automatically.
     <MotionConfig reducedMotion="user">
       <SmoothScroll>
-        <Preloader />
+        <Preloader enabled={isHome} />
         <Cursor />
 
         <div className="relative min-h-screen bg-jet text-ivory">
@@ -27,17 +33,11 @@ export default function App() {
             Skip to content
           </a>
 
-          <Navbar />
+          <Navbar isHome={isHome} />
 
-          <main id="main">
-            <Hero />
-            <MarqueeBand />
-            <VideoReel />
-            <Services />
-            <ContactForm />
-          </main>
+          <main id="main">{isHome ? <HomePage /> : <ContentPage page={pageByPath[route.path]} />}</main>
 
-          <Footer />
+          <Footer isHome={isHome} />
         </div>
 
         {/* Cinematic vignette over everything except overlays */}
