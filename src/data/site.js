@@ -10,6 +10,7 @@ export const site = {
   email: 'contact@impactmediagroup.ca',
   // Cloudflare Turnstile site key — public by design (the secret lives
   // only in the Worker as TURNSTILE_SECRET).
+  owners: ['Ryan Adamson', 'Milano S.'],
   turnstileSiteKey: '0x4AAAAAAFy9rocYEJkZrU6q',
   instagram: {
     handle: '@impactmediagta',
@@ -40,6 +41,7 @@ export const navLinks = [
   { label: 'Work', href: '#work' },
   { label: 'Services', href: '#services' },
   { label: 'Process', href: '#process' },
+  { label: 'About', href: '/about/' },
   { label: 'Contact', href: '#contact' },
 ];
 

@@ -39,7 +39,10 @@ const business = {
   name: site.name,
   alternateName: 'Impact Media Group',
   url: `${ORIGIN}/`,
+  logo: `${ORIGIN}/icon-512.png`,
+  image: `${ORIGIN}/icon-512.png`,
   email: site.email,
+  founder: site.owners.map((name) => ({ '@type': 'Person', name })),
   description:
     'On-site video content shoots, in-house editing, social media management and Meta ads for service-based businesses in the Greater Toronto Area.',
   priceRange: `From ${pricing.from}`,

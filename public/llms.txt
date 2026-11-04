@@ -2,7 +2,7 @@
 
 > Impact Media GTA is a content agency in the Greater Toronto Area, Ontario, Canada, for service-based businesses. It films on location at the client's business with professional videographers, edits all footage with its own in-house team of editors, and runs the client's social media accounts and Meta (Facebook and Instagram) ad campaigns. One team handles the whole process from shoot to posting.
 
-Also known as Impact Media Group. Based in Toronto; serves the Greater Toronto Area, including Mississauga, Vaughan, Markham and Brampton.
+Owned by Ryan Adamson and Milano S. Also known as Impact Media Group. Based in Toronto; serves the Greater Toronto Area, including Mississauga, Vaughan, Markham and Brampton.
 
 ## Pricing
 
@@ -38,7 +38,7 @@ Service businesses, including auto detailers, cosmetic clinics and med spas, lan
 
 ## Pages
 
-- [Home](https://impactmediagroup.ca/): services, work reel, process, industries and contact form
+- [Home](https://impactmediagroup.ca/): services, short-form reels shot and edited in-house, process, industries and contact form
 - [On-site video production](https://impactmediagroup.ca/services/video-production/)
 - [Short-form video editing](https://impactmediagroup.ca/services/video-editing/)
 - [Social media management](https://impactmediagroup.ca/services/social-media-management/)
@@ -47,4 +47,6 @@ Service businesses, including auto detailers, cosmetic clinics and med spas, lan
 - [Video marketing for cosmetic clinics and med spas](https://impactmediagroup.ca/industries/cosmetic-clinics/)
 - [Video marketing for landscapers](https://impactmediagroup.ca/industries/landscaping/)
 - [Frequently asked questions](https://impactmediagroup.ca/faq/)
+- [About Impact Media GTA](https://impactmediagroup.ca/about/)
+- [Privacy policy](https://impactmediagroup.ca/privacy/)
 - [Sitemap](https://impactmediagroup.ca/sitemap.xml)

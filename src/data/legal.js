@@ -54,19 +54,6 @@ export const privacyPage = {
       ],
     },
     {
-      heading: 'Who helps us handle it',
-      body: [
-        'We use a small number of service providers. They may only use your information to provide their service to us. Some are located in the United States, so your information may be stored or processed there and may be accessible to authorities under the laws of that country.',
-      ],
-      bullets: [
-        'Cloudflare (United States and global network): website security, the contact form endpoint, the Turnstile security check and privacy-friendly analytics.',
-        'Pushover (United States): delivers contact form messages to our phone as notifications.',
-        'Microsoft 365, provided through GoDaddy (United States and Canada): our business email.',
-        'GitHub (United States): hosts the website’s files.',
-        'Google Fonts (United States): serves the typefaces used on the site, which means your browser connects to Google’s servers.',
-      ],
-    },
-    {
       heading: 'How long we keep it',
       body: [
         'If you contact us and do not become a client, we delete your enquiry within 24 months of our last conversation. If you become a client, we keep your information for as long as we work together and afterwards for as long as Canadian tax and accounting law requires. Security and technical logs kept by our providers are short-lived and deleted on their own schedules.',
@@ -75,7 +62,7 @@ export const privacyPage = {
     {
       heading: 'How we protect it',
       body: [
-        'The site and contact form use encrypted HTTPS connections, the form is protected against automated spam, and access to our accounts is limited to the people who need it and secured with strong passwords and two-factor authentication. No method of transmission or storage is completely secure, but we work to protect your information and will notify you and the Privacy Commissioner if a breach creates a real risk of significant harm.',
+        'The site and contact form use encrypted HTTPS connections, the form is protected against automated spam, and access to our accounts is limited to the people who need it and secured with strong passwords and two-factor authentication. Some of the services we use to run the site and receive messages are located in the United States, so your information may be stored or processed there and be subject to the laws of that country. No method of transmission or storage is completely secure, but we work to protect your information and will notify you and the Privacy Commissioner if a breach creates a real risk of significant harm.',
       ],
     },
     {

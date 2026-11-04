@@ -9,6 +9,7 @@
  */
 import { pricing } from './site.js';
 import { privacyPage } from './legal.js';
+import { aboutPage } from './about.js';
 
 const AREAS = 'Toronto, Mississauga, Vaughan, Markham, Brampton and across the Greater Toronto Area';
 
@@ -479,7 +480,7 @@ export const faqPage = {
 
 /* ───────────────────────────── Route table ───────────────────────────── */
 
-export const contentPages = [...servicePages, ...industryPages, faqPage, privacyPage];
+export const contentPages = [...servicePages, ...industryPages, faqPage, aboutPage, privacyPage];
 
 export const routes = [{ path: '/', kind: 'home' }, ...contentPages];
 

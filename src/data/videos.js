@@ -1,61 +1,25 @@
 /**
- * Video asset metadata for the "Our Work" reel.
+ * Reels shown in the "Our work" marquee. All are Impact Media GTA's own
+ * short-form reels, shot and edited in-house. Files live in
+ * public/media/reels/: `preview` is a small muted loop for the marquee,
+ * `src` is the full-quality version with sound for the lightbox.
  *
- * Swap any `src` for your own hosted MP4/WebM URL (CDN, Cloudflare Stream
- * direct file, Vimeo direct link, etc.). The `id` must stay unique — it is
- * used as the React key and for the lightbox selection state.
- *
- * Current sources are open-licensed demo clips so the reel is fully
- * functional out of the box. Titles/clients are examples — replace them
- * with the real businesses you have shot for.
+ * Only add work the business actually produced, with the client's
+ * permission, and label it truthfully (client, industry).
  */
+const reel = (id, title) => ({
+  id,
+  title,
+  client: 'Impact Media GTA',
+  category: 'Short-form reel',
+  preview: `/media/reels/${id}-preview.mp4`,
+  src: `/media/reels/${id}.mp4`,
+  type: 'video/mp4',
+});
+
 export const videos = [
-  {
-    id: 'trades-01',
-    title: 'Kitchen Reno, Start to Finish',
-    client: 'Contractor',
-    category: 'On-Site Shoot',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-    type: 'video/mp4',
-  },
-  {
-    id: 'medspa-01',
-    title: 'Treatment Room Walkthrough',
-    client: 'Med Spa',
-    category: 'Social Reel',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-    type: 'video/mp4',
-  },
-  {
-    id: 'gym-01',
-    title: 'Morning Class Energy',
-    client: 'Fitness Studio',
-    category: 'Meta Ad',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-    type: 'video/mp4',
-  },
-  {
-    id: 'realestate-01',
-    title: 'Agent Spotlight',
-    client: 'Real Estate Team',
-    category: 'Brand Story',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
-    type: 'video/mp4',
-  },
-  {
-    id: 'barber-01',
-    title: 'Fresh Cut Friday',
-    client: 'Barbershop',
-    category: 'Short Form',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4',
-    type: 'video/mp4',
-  },
-  {
-    id: 'detailing-01',
-    title: 'Full Interior Detail',
-    client: 'Auto Detailing',
-    category: 'Before & After',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
-    type: 'video/mp4',
-  },
+  reel('they-searched', 'They Searched'),
+  reel('next-video-question', 'Next Video Question'),
+  reel('they-think-youre-closed', 'They Think You’re Closed'),
+  reel('12-hours-vs-zero', '12 Hours vs Zero'),
 ];

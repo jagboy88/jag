@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { MotionConfig } from 'framer-motion';
+import { installRevealFailsafe } from './lib/gsap.js';
 import SmoothScroll from './components/SmoothScroll.jsx';
 import Preloader from './components/Preloader.jsx';
 import Cursor from './components/Cursor.jsx';
@@ -17,6 +19,9 @@ import { findRoute, pageByPath } from './data/pages.js';
 export default function App({ path = '/' }) {
   const route = findRoute(path);
   const isHome = route.kind === 'home';
+
+  // Children's effects (and their ScrollTriggers) run first, so this sees them.
+  useEffect(() => installRevealFailsafe(), []);
 
   return (
     // reducedMotion="user" makes every Framer Motion transition respect the

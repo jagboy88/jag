@@ -9,7 +9,7 @@ import VideoModal from './VideoModal.jsx';
  * On mouse devices the tile tilts in 3D toward the pointer; on touch the
  * play glyph and labels are always visible.
  */
-function ReelTile({ video, onSelect, tabbable, previewsPlaying, preload = 'metadata' }) {
+function ReelTile({ video, onSelect, tabbable, previewsPlaying }) {
   const videoRef = useRef(null);
   const tileRef = useRef(null);
   const [inView, setInView] = useState(false);
@@ -17,8 +17,11 @@ function ReelTile({ video, onSelect, tabbable, previewsPlaying, preload = 'metad
   useEffect(() => {
     const el = videoRef.current;
     if (!el) return undefined;
+    // Start loading a little before the tile scrolls into view; nothing is
+    // downloaded for tiles that never come near the screen.
     const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0.1,
+      rootMargin: '0px 200px',
+      threshold: 0,
     });
     io.observe(el);
     return () => io.disconnect();
@@ -72,20 +75,20 @@ function ReelTile({ video, onSelect, tabbable, previewsPlaying, preload = 'metad
       tabIndex={tabbable ? 0 : -1}
       aria-label={`Play ${video.title} — ${video.client}`}
       data-cursor-label="Play"
-      className="group relative aspect-video w-[72vw] shrink-0 overflow-hidden border border-ivory/10 bg-jet
+      className="group relative aspect-[9/16] w-[46vw] shrink-0 overflow-hidden border border-ivory/10 bg-jet
         transition-[border-color,box-shadow] duration-300 ease-out will-change-fine
         hover:border-gold hover:shadow-gold
         focus-visible:outline-none focus-visible:border-gold focus-visible:shadow-gold
-        sm:w-[52vw] md:w-[40vw] lg:w-[30vw] xl:w-[26vw]"
+        sm:w-[32vw] md:w-[24vw] lg:w-[19vw] xl:w-[16vw]"
     >
       <video
         ref={videoRef}
-        src={video.src}
+        src={video.preview}
         type={video.type}
         muted
         loop
         playsInline
-        preload={preload}
+        preload="none"
         className="h-full w-full object-cover opacity-80 transition-opacity duration-300 group-hover:opacity-100"
       />
 
@@ -95,7 +98,7 @@ function ReelTile({ video, onSelect, tabbable, previewsPlaying, preload = 'metad
         </span>
         <div>
           <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">{video.client}</p>
-          <p className="mt-1 font-display text-2xl text-ivory lg:text-3xl">{video.title}</p>
+          <p className="mt-1 font-display text-xl leading-tight text-ivory lg:text-2xl">{video.title}</p>
         </div>
       </div>
 
@@ -176,7 +179,7 @@ export default function VideoReel() {
       <div className="mx-auto mb-14 flex max-w-7xl flex-col gap-6 px-6 lg:flex-row lg:items-end lg:justify-between lg:px-10">
         <div data-reveal>
           <h2 className="section-label mb-5 normal-case tracking-[0.25em]">
-            Our work — on-site video for Toronto-area businesses
+            Our work — short-form reels, shot and edited in-house
           </h2>
           <p className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
             A 360° look at <span className="italic text-gold">the reel.</span>
@@ -213,12 +216,17 @@ export default function VideoReel() {
           className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-jet to-transparent lg:w-40"
         />
 
+        {/* Seamless loop: the track holds two identical halves and slides
+            by exactly one half. Each half repeats the reels so it is always
+            wider than the screen. Only the first copy is in the prerendered
+            HTML (each piece of work appears once); the copies are
+            client-only and hidden from assistive tech. */}
         <div
-          className={`flex w-max gap-5 py-10 pl-6 animate-marquee will-change-transform lg:gap-8 lg:pl-10 ${
+          className={`flex w-max py-10 pl-6 will-change-transform lg:pl-10 ${mounted ? 'animate-marquee' : ''} ${
             paused ? 'marquee-paused' : ''
           }`}
         >
-          <div className="flex gap-5 lg:gap-8">
+          <div className="flex gap-5 pr-5 lg:gap-8 lg:pr-8">
             {videos.map((video) => (
               <ReelTile
                 key={video.id}
@@ -228,19 +236,22 @@ export default function VideoReel() {
                 previewsPlaying={!userPaused && !active}
               />
             ))}
+            {mounted &&
+              videos.map((video) => (
+                <div key={`${video.id}-a`} className="marquee-clone flex" aria-hidden="true">
+                  <ReelTile video={video} onSelect={open} tabbable={false} previewsPlaying={!userPaused && !active} />
+                </div>
+              ))}
           </div>
-          {/* Duplicate set for the seamless loop — client-only so the
-              prerendered HTML carries each piece of work exactly once. */}
           {mounted && (
-            <div className="marquee-clone flex gap-5 lg:gap-8" aria-hidden="true">
-              {videos.map((video) => (
+            <div className="marquee-clone flex gap-5 pr-5 lg:gap-8 lg:pr-8" aria-hidden="true">
+              {[...videos, ...videos].map((video, i) => (
                 <ReelTile
-                  key={`${video.id}-clone`}
+                  key={`${video.id}-b${i}`}
                   video={video}
                   onSelect={open}
                   tabbable={false}
                   previewsPlaying={!userPaused && !active}
-                  preload="none"
                 />
               ))}
             </div>

@@ -107,7 +107,7 @@ export default function VideoModal({ video, onClose }) {
             exit={{ opacity: 0, scale: 0.96, y: 16 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="relative mx-4 w-full max-w-6xl border border-gold/60 shadow-gold-soft"
+            className="relative mx-4 border border-gold/60 shadow-gold-soft"
           >
             <video
               ref={videoRef}
@@ -119,7 +119,7 @@ export default function VideoModal({ video, onClose }) {
               playsInline
               preload="auto"
               controlsList="nodownload"
-              className="aspect-video w-full bg-jet"
+              className="block aspect-[9/16] h-[min(72svh,calc((100vw-2rem)*16/9))] w-auto bg-jet"
             />
           </motion.div>
 

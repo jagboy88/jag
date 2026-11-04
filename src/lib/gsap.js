@@ -29,4 +29,28 @@ export const isFinePointer = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
+/**
+ * Search-engine renderers (Googlebot) don't scroll: they expand the viewport
+ * to the full page height and take a snapshot. Scroll-triggered reveals
+ * would leave below-the-fold content at opacity 0 in that snapshot. When the
+ * viewport is taller than any real screen, finish every scroll animation
+ * and show anything still pre-hidden. Real visitors never hit this.
+ */
+const TALL_VIEWPORT = 1600;
+export function installRevealFailsafe() {
+  if (typeof window === 'undefined') return () => {};
+  const check = () => {
+    if (window.innerHeight < TALL_VIEWPORT) return;
+    ScrollTrigger.getAll().forEach((st) => st.animation?.progress(1));
+    gsap.set('[data-page-fade], [data-hero-fade], .hero-line', { opacity: 1, y: 0 });
+  };
+  check();
+  const late = setTimeout(check, 1500);
+  window.addEventListener('resize', check);
+  return () => {
+    clearTimeout(late);
+    window.removeEventListener('resize', check);
+  };
+}
+
 export { gsap, ScrollTrigger, SplitText };

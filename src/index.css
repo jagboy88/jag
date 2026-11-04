@@ -155,9 +155,12 @@
 
   /* Hero fills the *visible* screen on phones (svh excludes Safari's
      toolbars), so the buttons never sit under the bottom bar. */
+  /* Capped so a renderer with a very tall viewport (Googlebot expands the
+     viewport to the page height instead of scrolling) doesn't stretch the
+     hero and push everything else out of view. */
   .min-h-hero {
-    min-height: 100vh;
-    min-height: 100svh;
+    min-height: min(100vh, 1400px);
+    min-height: min(100svh, 1400px);
   }
 
   /* Soft cinematic vignette; sits under nav (40), modal (50), preloader (60) */
