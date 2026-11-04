@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # Lets the deploy step skip cleanly until the secrets have been added.
-      READY: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' && secrets.PUSHOVER_TOKEN != '' && secrets.PUSHOVER_USER != '' }}
+      READY: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' && secrets.PUSHOVER_TOKEN != '' && secrets.PUSHOVER_USER != '' && secrets.TURNSTILE_SECRET != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -34,7 +34,7 @@ jobs:
       - name: Secrets not configured yet
         if: env.READY != 'true'
         run: |
-          echo "::notice::Skipping deploy: add CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, PUSHOVER_TOKEN and PUSHOVER_USER in Settings → Secrets and variables → Actions, then re-run this workflow."
+          echo "::notice::Skipping deploy: add CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, PUSHOVER_TOKEN, PUSHOVER_USER and TURNSTILE_SECRET in Settings → Secrets and variables → Actions, then re-run this workflow."
 
       - name: Deploy to Cloudflare
         if: env.READY == 'true'
@@ -48,6 +48,8 @@ jobs:
           secrets: |
             PUSHOVER_TOKEN
             PUSHOVER_USER
+            TURNSTILE_SECRET
         env:
           PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
           PUSHOVER_USER: ${{ secrets.PUSHOVER_USER }}
+          TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
