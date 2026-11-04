@@ -41,3 +41,25 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Tell Bing (and other IndexNow search engines) which pages exist after
+  # every deploy, so changes are recrawled quickly. Never fails the deploy.
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Submit URLs to IndexNow
+        env:
+          KEY: 514a38884a9dd5e07283c665f6570102
+          HOST: impactmediagroup.ca
+        run: |
+          sleep 30
+          curl -fsS "https://$HOST/sitemap.xml" | grep -o '<loc>[^<]*' | sed 's/<loc>//' > urls.txt
+          cat urls.txt
+          jq -Rn --arg host "$HOST" --arg key "$KEY" \
+            '{host: $host, key: $key, keyLocation: "https://\($host)/\($key).txt", urlList: [inputs]}' \
+            urls.txt > body.json
+          curl -sS -o response.txt -w 'IndexNow HTTP %{http_code}\n' -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' --data @body.json
+          cat response.txt

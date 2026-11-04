@@ -56,7 +56,7 @@ export default function Footer({ isHome = true }) {
 
           <nav aria-label="Footer" className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-6">
             <div data-footer-col>
-              <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">Services</p>
+              <a href="/services/" className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold hover:underline">Services</a>
               <ul className="mt-5 space-y-3">
                 {servicePages.map((p) => (
                   <li key={p.path}>
@@ -67,7 +67,7 @@ export default function Footer({ isHome = true }) {
             </div>
 
             <div data-footer-col>
-              <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">Industries</p>
+              <a href="/industries/" className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold hover:underline">Industries</a>
               <ul className="mt-5 space-y-3">
                 {industryPages.map((p) => (
                   <li key={p.path}>

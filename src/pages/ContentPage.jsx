@@ -7,6 +7,7 @@ import { breadcrumbsFor } from '../lib/seo.js';
 import ContactForm from '../components/ContactForm.jsx';
 import MagneticLink from '../components/MagneticLink.jsx';
 import Testimonial from '../components/Testimonial.jsx';
+import { Inline } from '../lib/inline.jsx';
 
 /**
  * Template for service, industry and FAQ pages. Content comes from
@@ -79,7 +80,7 @@ export default function ContentPage({ page }) {
 
           <div data-page-fade className="mt-12 grid gap-10 border-t border-ivory/10 pt-10 md:grid-cols-12 md:items-end">
             <p className="max-w-xl font-sans text-base font-light leading-relaxed text-ivory/75 md:col-span-7">
-              {page.intro}
+              <Inline text={page.intro} />
             </p>
             <div className="flex flex-col gap-3 md:col-span-5 md:items-end">
               <MagneticLink href="#contact" className="btn-gold-solid min-h-touch" data-cursor-label="Go">
@@ -93,6 +94,35 @@ export default function ContentPage({ page }) {
         </div>
       </section>
 
+      {/* ───────── Hub cards ───────── */}
+      {page.cards?.length > 0 && (
+        <section className="px-6 py-12 lg:px-10 lg:py-16">
+          <ul className="mx-auto grid max-w-7xl gap-5 sm:grid-cols-2">
+            {page.cards
+              .map((p) => pageByPath[p])
+              .filter(Boolean)
+              .map((c) => (
+                <li key={c.path} data-reveal>
+                  <a
+                    href={c.path}
+                    className="group flex h-full flex-col justify-between gap-6 border border-ivory/10 p-6 transition-colors duration-300 hover:border-gold lg:p-8"
+                  >
+                    <span>
+                      <span className="block font-display text-3xl text-ivory transition-colors group-hover:text-gold md:text-4xl">
+                        {c.navLabel}
+                      </span>
+                      <span className="mt-3 block font-sans text-sm font-light leading-relaxed text-ivory/70">{c.cardText}</span>
+                    </span>
+                    <span className="font-sans text-[0.65rem] uppercase tracking-luxe text-gold">
+                      Learn more <span aria-hidden="true">→</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+          </ul>
+        </section>
+      )}
+
       {/* ───────── Sections ───────── */}
       {page.sections.length > 0 && (
         <section className="px-6 py-12 lg:px-10 lg:py-20">
@@ -105,14 +135,14 @@ export default function ContentPage({ page }) {
                 <div className="space-y-5 lg:col-span-7">
                   {s.body?.map((para) => (
                     <p key={para} className="max-w-2xl font-sans text-base font-light leading-relaxed text-ivory/70">
-                      {para}
+                      <Inline text={para} />
                     </p>
                   ))}
                   {s.bullets && (
                     <ul className="grid gap-4 sm:grid-cols-2">
                       {s.bullets.map((b) => (
                         <li key={b} className="border-l border-gold/50 pl-4 font-sans text-sm leading-relaxed text-ivory/80">
-                          {b}
+                          <Inline text={b} />
                         </li>
                       ))}
                     </ul>
@@ -143,7 +173,9 @@ export default function ContentPage({ page }) {
                       +
                     </span>
                   </summary>
-                  <p className="mt-4 max-w-2xl font-sans text-base font-light leading-relaxed text-ivory/70">{f.a}</p>
+                  <p className="mt-4 max-w-2xl font-sans text-base font-light leading-relaxed text-ivory/70">
+                    <Inline text={f.a} />
+                  </p>
                 </details>
               ))}
             </div>

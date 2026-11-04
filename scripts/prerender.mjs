@@ -38,6 +38,12 @@ for (const route of routes) {
   await writeFile(path.join(outDir, 'index.html'), html);
   const words = appHtml.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
   console.log(`prerender: ${route.path.padEnd(38)} ${String(words).padStart(5)} words`);
+
+  // Google cuts titles at ~60 characters and descriptions at ~155.
+  const title = (html.match(/<title>([^<]*)<\/title>/) || [])[1]?.replace(/&amp;/g, '&') ?? '';
+  const desc = (html.match(/<meta name="description" content="([^"]*)"/) || [])[1]?.replace(/&amp;/g, '&') ?? '';
+  if (title.length > 60) console.warn(`prerender: WARNING title is ${title.length} chars on ${route.path}`);
+  if (desc.length > 158) console.warn(`prerender: WARNING description is ${desc.length} chars on ${route.path}`);
 }
 
 const today = new Date().toISOString().slice(0, 10);

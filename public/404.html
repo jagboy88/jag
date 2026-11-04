@@ -30,6 +30,13 @@
         font-size: 0.75rem; letter-spacing: 0.35em; text-transform: uppercase;
       }
       a.btn:hover { background: #e6c65c; }
+      nav { margin-top: 3rem; display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
+      nav h2 { font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: #d4af37; font-weight: 500; margin: 0 0 0.75rem; }
+      nav ul { list-style: none; margin: 0; padding: 0; }
+      nav li a { display: inline-flex; min-height: 32px; align-items: center; color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; }
+      nav li a:hover { color: #d4af37; }
+      .small { margin: 3rem 0 0; font-size: 0.75rem; }
+      .small a { color: inherit; }
     </style>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -38,9 +45,39 @@
     <main>
       <p class="label">404</p>
       <h1>That page <em>didn't make the cut.</em></h1>
-      <p>Everything about Impact Media GTA lives on one page — our work, services, process and how to book a shoot.</p>
-      <a class="btn" href="/">Back to the site</a>
-      <p style="margin-top:2rem;font-size:.75rem"><a href="/privacy/" style="color:inherit">Privacy Policy</a></p>
+      <p>The page you're looking for doesn't exist or has moved. Head back home, or jump straight to what you need below.</p>
+      <a class="btn" href="/">Back to the homepage</a>
+
+      <nav aria-label="Site">
+        <div>
+          <h2><a href="/services/" style="color:inherit;text-decoration:none">Services</a></h2>
+          <ul>
+            <li><a href="/services/video-production/">On-site video production</a></li>
+            <li><a href="/services/video-editing/">Video editing</a></li>
+            <li><a href="/services/social-media-management/">Social media management</a></li>
+            <li><a href="/services/meta-ads/">Facebook &amp; Instagram ads</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2><a href="/industries/" style="color:inherit;text-decoration:none">Industries</a></h2>
+          <ul>
+            <li><a href="/industries/auto-detailing/">Auto detailers</a></li>
+            <li><a href="/industries/cosmetic-clinics/">Cosmetic clinics</a></li>
+            <li><a href="/industries/landscaping/">Landscapers</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>More</h2>
+          <ul>
+            <li><a href="/about/">About us</a></li>
+            <li><a href="/faq/">FAQ</a></li>
+            <li><a href="/#work">Our work</a></li>
+            <li><a href="/#contact">Get a free content plan</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <p class="small"><a href="/privacy/">Privacy Policy</a></p>
     </main>
   </body>
 </html>

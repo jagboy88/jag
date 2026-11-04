@@ -6,13 +6,14 @@
  */
 import { site, pricing, services as homeServices } from '../data/site.js';
 import { pageByPath } from '../data/pages.js';
+import { plain } from './plain.js';
 
 export const ORIGIN = 'https://impactmediagroup.ca';
 
 const HOME = {
-  title: 'Impact Media GTA — Video Content, Social & Meta Ads for Service Businesses',
+  title: 'Impact Media GTA | Video, Social Media & Meta Ads in Toronto',
   description:
-    'We come to your business, shoot with professional videographers, edit in-house, and run your social media and Meta ads. Greater Toronto Area.',
+    'Toronto video and social media marketing agency for service businesses. We film at your business, edit in-house and run your social and Meta ads.',
 };
 
 const AREA_SERVED = [
@@ -66,8 +67,8 @@ const escapeText = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
 /** Breadcrumb trail for a content page. */
 export function breadcrumbsFor(page) {
   const trail = [{ name: 'Home', path: '/' }];
-  if (page.kind === 'service') trail.push({ name: 'Services', path: '/#services' });
-  if (page.kind === 'industry') trail.push({ name: 'Industries', path: '/#industries' });
+  if (page.kind === 'service') trail.push({ name: 'Services', path: '/services/' });
+  if (page.kind === 'industry') trail.push({ name: 'Industries', path: '/industries/' });
   trail.push({ name: page.navLabel, path: page.path });
   return trail;
 }
@@ -97,6 +98,20 @@ function graphFor(route) {
     });
   }
 
+  if (page.cards?.length) {
+    graph.push({
+      '@type': 'ItemList',
+      '@id': `${url}#list`,
+      name: page.navLabel,
+      itemListElement: page.cards.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: pageByPath[p]?.navLabel,
+        url: `${ORIGIN}${p}`,
+      })),
+    });
+  }
+
   graph.push({
     '@type': 'BreadcrumbList',
     itemListElement: breadcrumbsFor(page)
@@ -111,7 +126,7 @@ function graphFor(route) {
       mainEntity: page.faqs.map((f) => ({
         '@type': 'Question',
         name: f.q,
-        acceptedAnswer: { '@type': 'Answer', text: f.a },
+        acceptedAnswer: { '@type': 'Answer', text: plain(f.a) },
       })),
     });
   }

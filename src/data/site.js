@@ -46,8 +46,8 @@ export const pricing = {
 
 export const navLinks = [
   { label: 'Work', href: '#work' },
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
+  { label: 'Services', href: '/services/' },
+  { label: 'Industries', href: '/industries/' },
   { label: 'About', href: '/about/' },
   { label: 'Contact', href: '#contact' },
 ];

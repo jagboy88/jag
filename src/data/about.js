@@ -12,7 +12,7 @@ export const aboutPage = {
   navLabel: 'About',
   title: 'About Impact Media GTA | Ryan Adamson & Milano S.',
   description:
-    'Impact Media GTA is a Toronto video content and social media marketing agency owned by Ryan Adamson and Milano S., serving service businesses across the GTA.',
+    'Impact Media GTA is a Toronto video and social media marketing agency owned by Ryan Adamson and Milano S., serving service businesses across the GTA.',
   h1: 'About Impact Media GTA',
   display: ['Two owners.', 'One team.'],
   intro: `Impact Media GTA is a Toronto-based video content and social media marketing agency for service businesses, owned by ${ownerA} and ${ownerB}. We come to your business, film the work, edit it ourselves and run your social media and Meta ads.`,
