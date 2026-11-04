@@ -261,6 +261,7 @@ export const industryPages = [
     navLabel: 'Auto detailers',
     serviceName: 'Video Marketing for Auto Detailers',
     audience: 'Auto detailing businesses',
+    testimonial: 'dshine',
     title: 'Video Marketing for Auto Detailers in Toronto | Impact Media GTA',
     description:
       'Before-and-after reels, social media and Instagram ads for auto detailing shops in the GTA. We film at your shop, edit in-house and run your channels. From $1,000 CAD.',

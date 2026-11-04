@@ -1,6 +1,7 @@
 import Hero from '../components/Hero.jsx';
 import MarqueeBand from '../components/MarqueeBand.jsx';
 import VideoReel from '../components/VideoReel.jsx';
+import Testimonial from '../components/Testimonial.jsx';
 import Services from '../components/Services.jsx';
 import ContactForm from '../components/ContactForm.jsx';
 
@@ -10,6 +11,7 @@ export default function HomePage() {
       <Hero />
       <MarqueeBand />
       <VideoReel />
+      <Testimonial id="dshine" />
       <Services />
       <ContactForm />
     </>

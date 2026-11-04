@@ -6,6 +6,7 @@ import { pageByPath } from '../data/pages.js';
 import { breadcrumbsFor } from '../lib/seo.js';
 import ContactForm from '../components/ContactForm.jsx';
 import MagneticLink from '../components/MagneticLink.jsx';
+import Testimonial from '../components/Testimonial.jsx';
 
 /**
  * Template for service, industry and FAQ pages. Content comes from
@@ -114,6 +115,9 @@ export default function ContentPage({ page }) {
           </div>
         </section>
       )}
+
+      {/* ───────── Client testimonial ───────── */}
+      {page.testimonial && <Testimonial id={page.testimonial} heading="From a client" />}
 
       {/* ───────── FAQ ───────── */}
       {page.faqs?.length > 0 && (
