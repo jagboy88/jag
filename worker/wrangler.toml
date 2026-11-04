@@ -13,5 +13,19 @@ routes = [
 [vars]
 ALLOWED_ORIGINS = "https://impactmediagroup.ca,https://www.impactmediagroup.ca"
 
+# Rate limits. `period` must be 10 or 60 seconds; counters are per
+# Cloudflare location, so treat these as approximate ceilings.
+# Per visitor IP: 3 submissions a minute.
+[[ratelimits]]
+name = "IP_LIMITER"
+namespace_id = "1001"
+simple = { limit = 3, period = 60 }
+
+# Whole site: 20 submissions a minute across all visitors.
+[[ratelimits]]
+name = "GLOBAL_LIMITER"
+namespace_id = "1002"
+simple = { limit = 20, period = 60 }
+
 [observability]
 enabled = true

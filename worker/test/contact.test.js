@@ -124,6 +124,30 @@ test('Turnstile is enforced only when a secret is configured', async () => {
   assert.ok(!calls.some((c) => c.url.includes('pushover')));
 });
 
+test('rate limiters return 429 before anything is sent', async () => {
+  const keys = [];
+  const blockIp = { limit: async ({ key }) => (keys.push(key), { success: false }) };
+  const allow = { limit: async () => ({ success: true }) };
+  const req = () =>
+    new Request('https://impactmediagroup.ca/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Origin: ORIGIN, 'CF-Connecting-IP': '203.0.113.7' },
+      body: JSON.stringify(lead),
+    });
+
+  const perIp = await worker.fetch(req(), { ...env, IP_LIMITER: blockIp, GLOBAL_LIMITER: allow });
+  assert.equal(perIp.status, 429);
+  assert.equal(perIp.headers.get('Retry-After'), '60');
+  assert.deepEqual(keys, ['203.0.113.7']);
+
+  const global = await worker.fetch(req(), { ...env, IP_LIMITER: allow, GLOBAL_LIMITER: { limit: async () => ({ success: false }) } });
+  assert.equal(global.status, 429);
+
+  const ok = await worker.fetch(req(), { ...env, IP_LIMITER: allow, GLOBAL_LIMITER: allow });
+  assert.equal(ok.status, 200);
+  assert.equal(calls.length, 1);
+});
+
 test('clean trims and truncates; validate flags bad fields', () => {
   const c = clean({ name: '  Ana  ', email: 'a@b.co', message: 'x'.repeat(5000), extra: 'ignored' });
   assert.equal(c.name, 'Ana');

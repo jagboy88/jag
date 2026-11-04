@@ -40,6 +40,8 @@ jobs:
         if: env.READY == 'true'
         uses: cloudflare/wrangler-action@v3
         with:
+          # Pinned: [[ratelimits]] in wrangler.toml needs a recent wrangler 4.
+          wranglerVersion: '4.151.3'
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: worker
