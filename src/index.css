@@ -134,6 +134,32 @@
     color: #000000;
   }
 
+  /* Soft gold glow drawn with a gradient — no blur() filter, which is very
+     expensive on phone GPUs and flickers during scroll on iOS. */
+  .glow-gold {
+    background: radial-gradient(
+      closest-side,
+      rgba(212, 175, 55, 0.16),
+      rgba(212, 175, 55, 0.06) 45%,
+      rgba(212, 175, 55, 0) 75%
+    );
+  }
+
+  /* Only promote layers to the GPU where the effect that needs it runs
+     (mouse devices). iOS has a tight layer-memory budget. */
+  @media (hover: hover) and (pointer: fine) {
+    .will-change-fine {
+      will-change: transform;
+    }
+  }
+
+  /* Hero fills the *visible* screen on phones (svh excludes Safari's
+     toolbars), so the buttons never sit under the bottom bar. */
+  .min-h-hero {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
   /* Soft cinematic vignette; sits under nav (40), modal (50), preloader (60) */
   .vignette {
     position: fixed;
@@ -141,6 +167,44 @@
     pointer-events: none;
     z-index: 30;
     background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  }
+}
+
+/* ── No-flash loading ───────────────────────────────────────────────
+   An inline script in index.html adds `js` (and `intro-pending` when the
+   intro will play) before first paint. Elements that animate in start
+   hidden instead of flashing visible → hidden → animated. Each rule has a
+   failsafe that reveals content if the JavaScript never runs. */
+html.intro-pending::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: #000000;
+  animation: reveal-failsafe 0s 4s forwards;
+}
+html.js .hero-line,
+html.js [data-hero-fade],
+html.js [data-page-fade] {
+  opacity: 0;
+  animation: reveal-failsafe-opacity 0s 4s forwards;
+}
+@keyframes reveal-failsafe {
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes reveal-failsafe-opacity {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Touch devices: drop the full-screen fixed overlay (repaints on every
+   toolbar change in iOS Safari). */
+@media (hover: none), (pointer: coarse) {
+  .vignette {
+    display: none;
   }
 }
 

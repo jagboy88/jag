@@ -53,7 +53,7 @@ export default function Navbar({ isHome = true }) {
       ref={header}
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
         scrolled
-          ? 'border-b border-gold/20 bg-jet/60 backdrop-blur-xl backdrop-saturate-150'
+          ? 'border-b border-gold/20 bg-jet/60 backdrop-blur-xl backdrop-saturate-150 [@media(pointer:coarse)]:bg-jet/95 [@media(pointer:coarse)]:backdrop-filter-none'
           : 'border-b border-transparent bg-transparent'
       }`}
     >

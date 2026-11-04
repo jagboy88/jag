@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
-import { gsap, prefersReducedMotion } from '../lib/gsap.js';
+import { gsap, prefersReducedMotion, isFinePointer } from '../lib/gsap.js';
 import { navLinks, site } from '../data/site.js';
 import { faqPage, industryPages, servicePages } from '../data/pages.js';
 import InstagramIcon from './icons/InstagramIcon.jsx';
@@ -20,7 +20,7 @@ export default function Footer({ isHome = true }) {
     () => {
       if (prefersReducedMotion()) return;
       // The wordmark rises slower than the page (decorative parallax layer).
-      gsap.from(wordmark.current, {
+      if (isFinePointer()) gsap.from(wordmark.current, {
         yPercent: 45,
         ease: 'none',
         scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom bottom', scrub: true },
@@ -44,7 +44,7 @@ export default function Footer({ isHome = true }) {
           <div className="lg:col-span-6">
             <p
               ref={wordmark}
-              className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-normal leading-[0.95] text-ivory will-change-transform"
+              className="font-display text-[clamp(2.5rem,6vw,5.5rem)] font-normal leading-[0.95] text-ivory will-change-fine"
             >
               Impact Media
               <span className="block italic text-gold">GTA</span>

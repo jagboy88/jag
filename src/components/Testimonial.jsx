@@ -33,7 +33,7 @@ export default function Testimonial({ id, heading = 'What our clients say' }) {
     <section ref={root} className="relative overflow-hidden px-6 py-24 lg:px-10 lg:py-32">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[60vh] w-[60vh] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/[0.07] blur-[140px]"
+        className="glow-gold pointer-events-none absolute left-1/2 top-1/2 h-[90vh] w-[90vh] -translate-x-1/2 -translate-y-1/2 opacity-70"
       />
       <div className="relative mx-auto max-w-6xl">
         <h2 data-quote-part className="section-label mb-10 normal-case tracking-[0.25em]">

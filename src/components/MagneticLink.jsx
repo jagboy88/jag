@@ -51,7 +51,7 @@ export default function MagneticLink({
   }, [strength]);
 
   return (
-    <Tag ref={outer} className={`${className} will-change-transform`} {...props}>
+    <Tag ref={outer} className={`${className} will-change-fine`} {...props}>
       <span ref={inner} className="inline-flex items-center gap-3">
         {children}
       </span>

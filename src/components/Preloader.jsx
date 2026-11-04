@@ -43,6 +43,9 @@ export default function Preloader({ enabled = true }) {
   }, [enabled]);
 
   useEffect(() => {
+    // The real preloader (z-60) now covers the page, or there's no intro:
+    // either way the pre-paint CSS curtain is no longer needed.
+    if (show !== null) document.documentElement.classList.remove('intro-pending');
     if (show === false) markIntroDone();
   }, [show]);
 

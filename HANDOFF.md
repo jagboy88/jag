@@ -1,6 +1,6 @@
 # Handoff — Impact Media GTA website
 
-_Last updated: 2026-11-04 · Repo: `jagboy88/jag` (branch `master`) · Live: **https://impactmediagroup.ca**_
+_Last updated: 2026-11-04 (iOS pass) · Repo: `jagboy88/jag` (branch `master`) · Live: **https://impactmediagroup.ca**_
 
 ---
 
@@ -98,6 +98,7 @@ A marketing website for **Impact Media GTA**, a content agency in the Greater To
 - **Nested routes need `base: '/'`** in `vite.config.js`. Relative `./` broke asset paths on `/services/...`.
 - **Headless browser tests:** the moving marquee makes Playwright clicks "unstable" (hover first, or use the mouse API). Turnstile keeps the network busy on localhost, so use `waitUntil: 'load'`, not `networkidle`. The real Turnstile key only works on `impactmediagroup.ca`.
 - **Testing the form on the live site sends a real push.** For safe tests, use honeypot requests (`"website":"x"`) or requests with no token or a fake token (both rejected).
+- **iOS/touch performance rules (2026-11-04 pass):** scroll-scrubbed effects (hero parallax/zoom, marquee velocity skew, footer parallax), the pinned horizontal Process section (`desk:` Tailwind variant), pointer-following on the 3D knot, the vignette and navbar backdrop blur run **only on mouse/trackpad desktops** (`isFinePointer()` / `DESKTOP_MOTION`). No `blur()` filters — use `.glow-gold`. `will-change` only via `.will-change-fine`. `ScrollTrigger.config({ ignoreMobileResize: true })` stops toolbar-resize jumps. An inline script in `index.html` adds `js`/`intro-pending` classes before first paint to prevent content flashing; animated-in elements start at `opacity:0` in CSS with a 4 s failsafe. Real-device Safari testing isn't possible in the sandbox (WebKit not installed; synthetic touch scrolls don't work in headless Chromium) — verify on an iPhone.
 - **Don't write or edit testimonials.** Only use client-approved wording, quoted exactly.
 
 ---

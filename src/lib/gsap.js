@@ -11,6 +11,14 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 
 gsap.defaults({ ease: 'expo.out', duration: 0.9 });
 
+// iOS/Android show and hide the browser toolbar while scrolling, which fires
+// resize events. Without this, ScrollTrigger recalculates mid-scroll and
+// scroll-linked animations jump.
+ScrollTrigger.config({ ignoreMobileResize: true });
+
+/** Mouse/trackpad desktop — where scroll-scrubbed and pointer effects run. */
+export const DESKTOP_MOTION = '(min-width: 1024px) and (hover: hover) and (pointer: fine)';
+
 /** True when the visitor asked the OS for less motion. */
 export const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&

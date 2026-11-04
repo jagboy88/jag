@@ -73,7 +73,7 @@ function ReelTile({ video, onSelect, tabbable, previewsPlaying, preload = 'metad
       aria-label={`Play ${video.title} — ${video.client}`}
       data-cursor-label="Play"
       className="group relative aspect-video w-[72vw] shrink-0 overflow-hidden border border-ivory/10 bg-jet
-        transition-[border-color,box-shadow] duration-300 ease-out will-change-transform
+        transition-[border-color,box-shadow] duration-300 ease-out will-change-fine
         hover:border-gold hover:shadow-gold
         focus-visible:outline-none focus-visible:border-gold focus-visible:shadow-gold
         sm:w-[52vw] md:w-[40vw] lg:w-[30vw] xl:w-[26vw]"
@@ -136,10 +136,21 @@ export default function VideoReel() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  // Pause the marquee while the section is off screen (saves battery and
+  // GPU time on phones; the tiles already pause their own previews).
+  const [sectionVisible, setSectionVisible] = useState(true);
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return undefined;
+    const io = new IntersectionObserver(([entry]) => setSectionVisible(entry.isIntersecting), { rootMargin: '200px 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   const open = useCallback((video) => setActive(video), []);
   const close = useCallback(() => setActive(null), []);
 
-  const paused = Boolean(active) || hovering || userPaused;
+  const paused = Boolean(active) || hovering || userPaused || !sectionVisible;
 
   useGSAP(
     () => {

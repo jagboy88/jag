@@ -3,6 +3,11 @@ export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
+      screens: {
+        // Desktop with a mouse/trackpad. Touch devices (incl. iPad) get the
+        // stacked layout instead of the pinned horizontal scroll.
+        desk: { raw: '(min-width: 1024px) and (hover: hover) and (pointer: fine)' },
+      },
       colors: {
         jet: '#000000',
         ivory: '#FFFFFF',

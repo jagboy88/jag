@@ -25,7 +25,7 @@ function makeDotTexture() {
 }
 
 /** 3000 gold particles sampled along a torus knot, plus a faint wire skeleton. */
-function GoldKnot({ reduced }) {
+function GoldKnot({ reduced, interactive }) {
   const group = useRef();
   const spin = useRef(0);
   const { viewport } = useThree();
@@ -50,8 +50,11 @@ function GoldKnot({ reduced }) {
     if (!group.current) return;
     if (!reduced) spin.current += delta * 0.12;
     // Pointer parallax: ease the whole knot toward the cursor.
-    const targetX = reduced ? 0 : state.pointer.y * -0.25;
-    const targetY = spin.current + (reduced ? 0 : state.pointer.x * 0.35);
+    // Touch devices: a tap updates the pointer, which would yank the knot
+    // toward the finger mid-scroll — so only follow a real mouse.
+    const follow = interactive && !reduced;
+    const targetX = follow ? state.pointer.y * -0.25 : 0;
+    const targetY = spin.current + (follow ? state.pointer.x * 0.35 : 0);
     group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, 0.35 + targetX, 0.04);
     group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, targetY, 0.06);
   });
@@ -113,17 +116,17 @@ function Dust({ reduced }) {
  * off-screen; `reduced` freezes motion for prefers-reduced-motion users
  * (one static frame is still drawn so the composition holds).
  */
-export default function HeroScene({ active = true, reduced = false }) {
+export default function HeroScene({ active = true, reduced = false, interactive = true }) {
   return (
     <Canvas
       dpr={[1, 1.5]}
       frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
       gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
       camera={{ position: [0, 0, 5.6], fov: 42 }}
-      style={{ position: 'absolute', inset: 0 }}
+      style={{ position: 'absolute', inset: 0, pointerEvents: interactive ? 'auto' : 'none' }}
       aria-hidden="true"
     >
-      <GoldKnot reduced={reduced} />
+      <GoldKnot reduced={reduced} interactive={interactive} />
       <Dust reduced={reduced} />
     </Canvas>
   );

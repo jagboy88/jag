@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
-import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/gsap.js';
+import { gsap, ScrollTrigger, prefersReducedMotion, isFinePointer } from '../lib/gsap.js';
 
 const items = [
   'On-site shoots',
@@ -28,6 +28,9 @@ export default function MarqueeBand() {
         repeat: -1,
       });
 
+      // Velocity skew only with a mouse/trackpad: iOS momentum scrolling
+      // reports velocity spikes that make the band shake.
+      if (!isFinePointer()) return;
       ScrollTrigger.create({
         onUpdate: (self) => {
           const v = self.getVelocity();

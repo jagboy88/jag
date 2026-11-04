@@ -20,8 +20,16 @@ export default function ContentPage({ page }) {
 
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
-      gsap.from('[data-page-fade]', { opacity: 0, y: 24, duration: 0.9, stagger: 0.1, ease: 'expo.out' });
+      // [data-page-fade] starts hidden via CSS (no flash on load).
+      if (prefersReducedMotion()) {
+        gsap.set('[data-page-fade]', { opacity: 1 });
+        return;
+      }
+      gsap.fromTo(
+        '[data-page-fade]',
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.9, stagger: 0.1, ease: 'expo.out' },
+      );
       gsap.utils.toArray('[data-reveal]', root.current).forEach((el) => {
         gsap.from(el, {
           opacity: 0,
@@ -41,7 +49,7 @@ export default function ContentPage({ page }) {
       <section className="relative overflow-hidden px-6 pb-16 pt-36 lg:px-10 lg:pb-24 lg:pt-44">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-1/3 right-0 h-[70vh] w-[70vh] rounded-full bg-gold/10 blur-[160px]"
+          className="glow-gold pointer-events-none absolute -top-1/3 right-0 h-[100vh] w-[100vh]"
         />
         <div className="relative mx-auto max-w-7xl">
           <nav aria-label="Breadcrumb" data-page-fade>

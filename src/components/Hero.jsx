@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
-import { gsap, SplitText, prefersReducedMotion } from '../lib/gsap.js';
+import { gsap, SplitText, prefersReducedMotion, isFinePointer } from '../lib/gsap.js';
 import { onIntroDone } from '../lib/intro.js';
 import { cta, pricing } from '../data/site.js';
 import MagneticLink from './MagneticLink.jsx';
@@ -20,7 +20,7 @@ function GlowFallback() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute -top-1/3 left-1/2 h-[80vh] w-[80vh] -translate-x-1/2 rounded-full bg-gold/10 blur-[160px]"
+      className="glow-gold pointer-events-none absolute -top-1/3 left-1/2 h-[110vh] w-[110vh] -translate-x-1/2"
     />
   );
 }
@@ -84,7 +84,11 @@ export default function Hero() {
       const split = new SplitText(lines, { type: 'chars', charsClass: 'hero-char' });
       const fades = gsap.utils.toArray('[data-hero-fade]', section.current);
 
-      if (!reduced) {
+      // Lines start hidden via CSS (no flash); hand visibility to the chars.
+      if (reduced) {
+        gsap.set([lines, fades], { opacity: 1 });
+      } else {
+        gsap.set(lines, { opacity: 1 });
         gsap.set(split.chars, { opacity: 0, y: 70, rotateX: -75 });
         gsap.set(fades, { opacity: 0, y: 24 });
       }
@@ -97,7 +101,9 @@ export default function Hero() {
           .to(fades, { opacity: 1, y: 0, duration: 0.9, stagger: 0.12, ease: 'expo.out' }, '-=0.7');
       });
 
-      if (!reduced) {
+      // Desktop only: scaling/fading a WebGL canvas on every scroll frame
+      // janks and flickers on phones (especially iOS Safari).
+      if (!reduced && isFinePointer()) {
         // Decorative layers only: copy drifts up and dims, the scene zooms.
         const st = { trigger: section.current, start: 'top top', end: 'bottom top', scrub: true };
         gsap.to(copy.current, { yPercent: -14, opacity: 0.1, ease: 'none', scrollTrigger: st });
@@ -116,13 +122,13 @@ export default function Hero() {
     <section
       ref={section}
       id="top"
-      className="relative flex min-h-screen flex-col justify-end overflow-hidden px-6 pb-20 pt-40 lg:px-10 lg:pb-28"
+      className="min-h-hero relative flex flex-col justify-end overflow-hidden px-6 pb-20 pt-40 lg:px-10 lg:pb-28"
     >
       {/* 3D backdrop — loaded only when the device and connection can afford it */}
-      <div ref={sceneWrap} className="absolute inset-0 will-change-transform">
+      <div ref={sceneWrap} className="will-change-fine absolute inset-0">
         {sceneEnabled ? (
           <Suspense fallback={<GlowFallback />}>
-            <HeroScene active={sceneActive} reduced={reduced} />
+            <HeroScene active={sceneActive} reduced={reduced} interactive={isFinePointer()} />
           </Suspense>
         ) : (
           <GlowFallback />

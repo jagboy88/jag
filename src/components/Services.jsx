@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
-import { gsap, prefersReducedMotion } from '../lib/gsap.js';
+import { gsap, prefersReducedMotion, DESKTOP_MOTION } from '../lib/gsap.js';
 import { cta, industries, pricing, process, services } from '../data/site.js';
 import MagneticLink from './MagneticLink.jsx';
 
@@ -38,7 +38,7 @@ export default function Services() {
 
       // Pinned horizontal process — desktop only; phones get a normal stack.
       const mm = gsap.matchMedia();
-      mm.add('(min-width: 1024px)', () => {
+      mm.add(DESKTOP_MOTION, () => {
         const distance = () => track.current.scrollWidth - window.innerWidth + 80;
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -136,7 +136,7 @@ export default function Services() {
       <section id="process" className="relative border-y border-gold/30">
         <div
           ref={pin}
-          className="flex flex-col justify-center py-20 lg:h-screen lg:py-0 lg:overflow-hidden"
+          className="flex flex-col justify-center py-20 desk:h-screen desk:py-0 desk:overflow-hidden"
         >
           <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
             <div data-reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -149,7 +149,7 @@ export default function Services() {
                   <span className="italic text-gold">Zero on your plate.</span>
                 </p>
               </div>
-              <div className="hidden w-64 lg:block">
+              <div className="hidden w-64 desk:block">
                 <div className="h-px w-full bg-ivory/15">
                   <div ref={progress} className="h-px w-full origin-left bg-gold" />
                 </div>
@@ -159,12 +159,12 @@ export default function Services() {
 
           <ol
             ref={track}
-            className="mt-14 flex flex-col gap-12 px-6 lg:mt-16 lg:w-max lg:flex-row lg:gap-10 lg:px-10 lg:will-change-transform"
+            className="mt-14 flex flex-col gap-12 px-6 lg:px-10 desk:mt-16 desk:w-max desk:flex-row desk:gap-10 desk:will-change-transform"
           >
             {process.map((item) => (
               <li
                 key={item.step}
-                className="process-panel relative shrink-0 border-l border-gold/40 pl-6 lg:w-[58vw] lg:pl-10"
+                className="process-panel relative shrink-0 border-l border-gold/40 pl-6 lg:pl-10 desk:w-[58vw]"
               >
                 <span
                   aria-hidden="true"
