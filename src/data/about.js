@@ -39,6 +39,6 @@ export const aboutPage = {
       ],
     },
   ],
-  testimonial: 'dshine',
+  testimonial: ['dshine', 'rhcc'],
   related: ['/services/video-production/', '/services/social-media-management/', '/services/meta-ads/'],
 };

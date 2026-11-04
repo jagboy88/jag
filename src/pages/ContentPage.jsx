@@ -125,7 +125,7 @@ export default function ContentPage({ page }) {
       )}
 
       {/* ───────── Client testimonial ───────── */}
-      {page.testimonial && <Testimonial id={page.testimonial} heading="From a client" />}
+      {page.testimonial && <Testimonial ids={[].concat(page.testimonial)} heading={[].concat(page.testimonial).length > 1 ? 'What our clients say' : 'From a client'} />}
 
       {/* ───────── FAQ ───────── */}
       {page.faqs?.length > 0 && (

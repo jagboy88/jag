@@ -11,7 +11,7 @@ export default function HomePage() {
       <Hero />
       <MarqueeBand />
       <VideoReel />
-      <Testimonial id="dshine" />
+      <Testimonial ids={['dshine', 'rhcc']} />
       <Services />
       <ContactForm />
     </>

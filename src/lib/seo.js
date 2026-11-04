@@ -48,7 +48,7 @@ const business = {
   priceRange: `From ${pricing.from}`,
   areaServed: AREA_SERVED,
   address: { '@type': 'PostalAddress', addressLocality: 'Toronto', addressRegion: 'ON', addressCountry: 'CA' },
-  sameAs: [site.instagram.url],
+  sameAs: [site.instagram.url, site.google.profileUrl],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Services',

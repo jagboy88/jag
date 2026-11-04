@@ -362,6 +362,7 @@ export const industryPages = [
         a: `${pricing.line} Request a free content plan for your clinic.`,
       },
     ],
+    testimonial: 'rhcc',
     related: ['/services/social-media-management/', '/services/meta-ads/', '/industries/auto-detailing/'],
   },
   {

@@ -11,6 +11,13 @@ export const site = {
   // Cloudflare Turnstile site key — public by design (the secret lives
   // only in the Worker as TURNSTILE_SECRET).
   owners: ['Ryan Adamson', 'Milano S.'],
+  google: {
+    // Google Business Profile (shared by the owners). rating/count: update
+    // as reviews come in — only state what the profile actually shows.
+    reviewsUrl: 'https://share.google/0uh6PufxAZw2BSifP',
+    profileUrl: 'https://www.google.com/search?kgmid=/g/11_00ttxhq&q=Impact+Media+GTA',
+    rating: '5.0',
+  },
   turnstileSiteKey: '0x4AAAAAAFy9rocYEJkZrU6q',
   instagram: {
     handle: '@impactmediagta',
