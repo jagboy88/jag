@@ -129,6 +129,10 @@ export default function Footer({ isHome = true }) {
         <div className="mt-8 flex flex-col gap-4 font-sans text-[0.65rem] uppercase tracking-luxe text-ivory/60 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {site.name}. All rights reserved.
+            <span aria-hidden="true" className="mx-3 text-gold/60">·</span>
+            <a href="/privacy/" className="transition-colors hover:text-gold">
+              Privacy
+            </a>
           </p>
           <p>
             Crafted in the <span className="text-gold">{site.region}</span>

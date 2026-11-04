@@ -491,6 +491,15 @@ export default function ContactForm() {
               )}
             </button>
           </div>
+
+          <p className="mt-6 font-sans text-xs leading-relaxed text-ivory/60">
+            We use these details only to reply and prepare your free plan. They&apos;re sent securely through
+            Cloudflare and Pushover (USA). See our{' '}
+            <a href="/privacy/" className="text-gold underline-offset-4 hover:underline">
+              Privacy Policy
+            </a>
+            .
+          </p>
         </motion.form>
       </div>
     </section>

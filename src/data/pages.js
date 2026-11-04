@@ -8,6 +8,7 @@
  * them here.
  */
 import { pricing } from './site.js';
+import { privacyPage } from './legal.js';
 
 const AREAS = 'Toronto, Mississauga, Vaughan, Markham, Brampton and across the Greater Toronto Area';
 
@@ -478,7 +479,7 @@ export const faqPage = {
 
 /* ───────────────────────────── Route table ───────────────────────────── */
 
-export const contentPages = [...servicePages, ...industryPages, faqPage];
+export const contentPages = [...servicePages, ...industryPages, faqPage, privacyPage];
 
 export const routes = [{ path: '/', kind: 'home' }, ...contentPages];
 

@@ -129,16 +129,12 @@ export default {
       return json({ error: 'Forbidden' }, 403, cors);
     }
 
-    // Rate limits (Cloudflare Workers Rate Limiting bindings, see
-    // wrangler.toml): a few submissions per minute per visitor IP, plus a
-    // site-wide ceiling so a botnet rotating IPs still can't flood the phone.
+    // Per-visitor rate limit (Cloudflare Workers Rate Limiting binding, see
+    // wrangler.toml): a few attempts per minute per IP, checked early so one
+    // client can't hammer the endpoint.
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
     if (env.IP_LIMITER) {
       const { success } = await env.IP_LIMITER.limit({ key: ip });
-      if (!success) return json({ error: 'Too many requests' }, 429, { ...cors, 'Retry-After': '60' });
-    }
-    if (env.GLOBAL_LIMITER) {
-      const { success } = await env.GLOBAL_LIMITER.limit({ key: 'all' });
       if (!success) return json({ error: 'Too many requests' }, 429, { ...cors, 'Retry-After': '60' });
     }
 
@@ -164,6 +160,14 @@ export default {
     if (env.TURNSTILE_SECRET) {
       const ok = await verifyTurnstile(body.turnstileToken, ip, env.TURNSTILE_SECRET);
       if (!ok) return json({ error: 'Verification failed' }, 403, cors);
+    }
+
+    // Site-wide ceiling, counted only for verified submissions. Junk and
+    // unverified requests are rejected above without touching this counter,
+    // so nobody can fill it up to lock real visitors out of the form.
+    if (env.GLOBAL_LIMITER) {
+      const { success } = await env.GLOBAL_LIMITER.limit({ key: 'all' });
+      if (!success) return json({ error: 'Too many requests' }, 429, { ...cors, 'Retry-After': '60' });
     }
 
     if (!env.PUSHOVER_TOKEN || !env.PUSHOVER_USER) {

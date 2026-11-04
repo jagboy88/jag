@@ -6,6 +6,7 @@ import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ContentPage from './pages/ContentPage.jsx';
+import LegalPage from './pages/LegalPage.jsx';
 import { findRoute, pageByPath } from './data/pages.js';
 
 /**
@@ -35,7 +36,15 @@ export default function App({ path = '/' }) {
 
           <Navbar isHome={isHome} />
 
-          <main id="main">{isHome ? <HomePage /> : <ContentPage page={pageByPath[route.path]} />}</main>
+          <main id="main">
+            {isHome ? (
+              <HomePage />
+            ) : route.kind === 'legal' ? (
+              <LegalPage page={pageByPath[route.path]} />
+            ) : (
+              <ContentPage page={pageByPath[route.path]} />
+            )}
+          </main>
 
           <Footer isHome={isHome} />
         </div>

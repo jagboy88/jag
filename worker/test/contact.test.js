@@ -148,6 +148,24 @@ test('rate limiters return 429 before anything is sent', async () => {
   assert.equal(calls.length, 1);
 });
 
+test('unverified or junk requests never count against the site-wide limit', async () => {
+  let globalHits = 0;
+  const countGlobal = { limit: async () => (globalHits++, { success: true }) };
+  const allow = { limit: async () => ({ success: true }) };
+  const e = { ...env, TURNSTILE_SECRET: 'secret', IP_LIMITER: allow, GLOBAL_LIMITER: countGlobal };
+  // siteverify says no
+  globalThis.fetch = async (url) =>
+    new Response(JSON.stringify(String(url).includes('siteverify') ? { success: false } : { status: 1 }), { status: 200 });
+
+  assert.equal((await worker.fetch(new Request('https://impactmediagroup.ca/api/contact', {
+    method: 'POST', headers: { Origin: ORIGIN }, body: '{' }), e)).status, 400);
+  assert.equal((await worker.fetch(new Request('https://impactmediagroup.ca/api/contact', {
+    method: 'POST', headers: { Origin: ORIGIN }, body: JSON.stringify({}) }), e)).status, 422);
+  assert.equal((await worker.fetch(new Request('https://impactmediagroup.ca/api/contact', {
+    method: 'POST', headers: { Origin: ORIGIN }, body: JSON.stringify({ ...lead, turnstileToken: 'bad' }) }), e)).status, 403);
+  assert.equal(globalHits, 0);
+});
+
 test('clean trims and truncates; validate flags bad fields', () => {
   const c = clean({ name: '  Ana  ', email: 'a@b.co', message: 'x'.repeat(5000), extra: 'ignored' });
   assert.equal(c.name, 'Ana');
