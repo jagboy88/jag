@@ -6,14 +6,16 @@
 export const testimonials = {
   dshine: {
     id: 'dshine',
-    // Approved by the owner, sent to Impact Media GTA on 2026-11-04.
+    // Approved by the owner, sent to Impact Media GTA on 2026-11-04; also
+    // posted by them as a five-star Google review.
     quote:
       'Impact Media came to our mobile detailing sites, filmed all our work, handled the editing, and our meta ads. After around 3 weeks of running meta ads I got fully booked out for details and had to stop accepting new clients for the month and half of next month. They made it super easy didn’t have to film or edit anything ourselves.',
-    author: 'Owner',
+    author: 'Owner · Google review',
     company: 'D Shine Details',
     industry: 'Mobile auto detailing',
     // Short pull-quote shown large; must be a verbatim excerpt of `quote`.
     highlight: 'After around 3 weeks of running meta ads I got fully booked out',
+    source: 'google',
   },
   rhcc: {
     id: 'rhcc',
