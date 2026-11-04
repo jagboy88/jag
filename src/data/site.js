@@ -14,6 +14,17 @@ export const site = {
   },
 };
 
+/**
+ * Primary call to action. A free, specific, low-commitment next step
+ * converts better than "book a shoot" for a first-time visitor.
+ */
+export const cta = {
+  primary: 'Get a free content plan',
+  short: 'Free plan', // compact mobile-header button
+  subline: "We'll map out a month of posts for your business. No commitment.",
+  submit: 'Request my free plan',
+};
+
 export const navLinks = [
   { label: 'Work', href: '#work' },
   { label: 'Services', href: '#services' },

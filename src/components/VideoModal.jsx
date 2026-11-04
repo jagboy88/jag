@@ -44,6 +44,10 @@ export default function VideoModal({ video, onClose }) {
     });
   }, [video]);
 
+  // Nothing to portal to on the server (prerender) and nothing to show
+  // until a video is selected.
+  if (typeof document === 'undefined') return null;
+
   return createPortal(
     <AnimatePresence>
       {video && (

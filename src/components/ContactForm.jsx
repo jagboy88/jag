@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { site } from '../data/site.js';
+import { cta, site } from '../data/site.js';
 import InstagramIcon from './icons/InstagramIcon.jsx';
 
 const projectTypes = [
@@ -123,13 +123,16 @@ export default function ContactForm() {
       <div className="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-12 lg:px-10">
         {/* Left column */}
         <div className="lg:col-span-5">
-          <p className="section-label mb-5">Contact</p>
-          <h2 className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
-            Let&apos;s get you <span className="italic text-gold">on camera.</span>
+          <h2 className="section-label mb-5 normal-case tracking-[0.25em]">
+            Book a video content shoot in Toronto
           </h2>
+          <p className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
+            Let&apos;s get you <span className="italic text-gold">on camera.</span>
+          </p>
           <p className="mt-8 max-w-sm font-sans text-sm font-light leading-relaxed text-ivory/60">
             Tell us about your business and what you want more of — leads,
-            bookings, followers. We reply within one business day.
+            bookings, followers. We&apos;ll map out a month of content for you,
+            free, and reply within one business day.
           </p>
 
           <dl className="mt-12 space-y-6 border-t border-ivory/10 pt-8">
@@ -392,7 +395,7 @@ export default function ContactForm() {
               disabled={status === 'submitting'}
               className="btn-gold-solid min-h-touch disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Send inquiry
+              {cta.submit}
               <span aria-hidden="true">→</span>
             </button>
           </div>

@@ -21,7 +21,7 @@ export default function App() {
 
         <div className="relative min-h-screen bg-jet text-ivory">
           <a
-            href="#work"
+            href="#main"
             className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-gold focus:px-4 focus:py-2 focus:font-sans focus:text-xs focus:uppercase focus:tracking-luxe focus:text-jet"
           >
             Skip to content
@@ -29,7 +29,7 @@ export default function App() {
 
           <Navbar />
 
-          <main>
+          <main id="main">
             <Hero />
             <MarqueeBand />
             <VideoReel />

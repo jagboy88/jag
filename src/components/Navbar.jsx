@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '../lib/gsap.js';
 import { onIntroDone } from '../lib/intro.js';
 import { lockScroll } from '../lib/scrollLock.js';
-import { navLinks, site } from '../data/site.js';
+import { cta, navLinks, site } from '../data/site.js';
 import InstagramIcon from './icons/InstagramIcon.jsx';
 import MagneticLink from './MagneticLink.jsx';
 
@@ -107,12 +107,21 @@ export default function Navbar() {
               data-cursor-label="Go"
               className="flex min-h-touch items-center bg-gold px-5 font-sans text-[0.65rem] uppercase tracking-luxe text-jet transition-colors duration-300 hover:bg-gold-soft hover:shadow-gold-soft"
             >
-              Book a shoot
+              {cta.primary}
             </MagneticLink>
           </li>
         </ul>
 
-        {/* Mobile toggle */}
+        {/* Mobile: compact CTA + toggle */}
+        <div className="flex items-center gap-2 md:hidden">
+          <a
+            href="#contact"
+            onClick={closeMenu}
+            data-nav-item
+            className="flex min-h-touch items-center bg-gold px-4 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-jet transition-colors duration-300 hover:bg-gold-soft"
+          >
+            {cta.short}
+          </a>
         <button
           type="button"
           onClick={() => setMenuOpen((open) => !open)}
@@ -138,6 +147,7 @@ export default function Navbar() {
             }`}
           />
         </button>
+        </div>
       </nav>
 
       {/* Mobile drawer */}
@@ -179,7 +189,7 @@ export default function Navbar() {
                 onClick={closeMenu}
                 className="btn-gold-solid min-h-touch w-full"
               >
-                Book a shoot
+                {cta.primary}
               </a>
               <a
                 href={site.instagram.url}

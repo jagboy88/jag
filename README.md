@@ -17,6 +17,25 @@ No image files anywhere: the visual engine is built entirely from semantic HTML5
 - [Lenis](https://lenis.darkroom.engineering) — smooth scrolling
 - [Framer Motion](https://www.framer.com/motion/) — lightbox and mobile drawer transitions
 
+## Build pipeline & prerendering
+
+`npm run build` runs three steps:
+
+1. `vite build` — client bundle (Three.js and GSAP in their own cached chunks)
+2. `vite build --ssr src/entry-server.jsx` — a server bundle of `<App />`
+3. `node scripts/prerender.mjs` — renders the app to static HTML and injects it into `dist/index.html`
+
+The result is a page whose full content (headings, services, process, industries, contact details) is in the HTML **without JavaScript**, so search engines, AI crawlers and link-preview scrapers read it directly. `src/main.jsx` hydrates the prerendered markup on the client. Components that need browser APIs decide on the client (`Preloader`, the 3D scene, the marquee clone set) so server and client markup match.
+
+`npm run build:client` skips prerendering (useful for quick local checks).
+
+## SEO / sharing
+
+- `index.html`: canonical, Open Graph + Twitter card tags, inline SVG favicon, `ProfessionalService` JSON-LD (services, area served, Instagram)
+- `public/robots.txt`, `public/sitemap.xml`, `public/404.html` (GitHub Pages serves the 404 automatically)
+- Keyword-bearing headings are the small gold eyebrows (`h1`/`h2`); the large display lines are styled paragraphs
+- Primary CTA copy lives in `src/data/site.js` (`cta`)
+
 ## Motion system
 
 | Piece | File | Notes |

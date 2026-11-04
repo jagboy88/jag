@@ -9,7 +9,7 @@ import VideoModal from './VideoModal.jsx';
  * On mouse devices the tile tilts in 3D toward the pointer; on touch the
  * play glyph and labels are always visible.
  */
-function ReelTile({ video, onSelect, tabbable, previewsPlaying }) {
+function ReelTile({ video, onSelect, tabbable, previewsPlaying, preload = 'metadata' }) {
   const videoRef = useRef(null);
   const tileRef = useRef(null);
   const [inView, setInView] = useState(false);
@@ -85,7 +85,7 @@ function ReelTile({ video, onSelect, tabbable, previewsPlaying }) {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload={preload}
         className="h-full w-full object-cover opacity-80 transition-opacity duration-300 group-hover:opacity-100"
       />
 
@@ -133,6 +133,8 @@ export default function VideoReel() {
   const [active, setActive] = useState(null);
   const [hovering, setHovering] = useState(false);
   const [userPaused, setUserPaused] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const open = useCallback((video) => setActive(video), []);
   const close = useCallback(() => setActive(null), []);
@@ -162,10 +164,12 @@ export default function VideoReel() {
     >
       <div className="mx-auto mb-14 flex max-w-7xl flex-col gap-6 px-6 lg:flex-row lg:items-end lg:justify-between lg:px-10">
         <div data-reveal>
-          <p className="section-label mb-5">Our Work</p>
-          <h2 className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
-            A 360° look at <span className="italic text-gold">the reel.</span>
+          <h2 className="section-label mb-5 normal-case tracking-[0.25em]">
+            Our work — on-site video for Toronto-area businesses
           </h2>
+          <p className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
+            A 360° look at <span className="italic text-gold">the reel.</span>
+          </p>
         </div>
 
         <div data-reveal className="flex flex-col gap-5 lg:items-end">
@@ -214,17 +218,22 @@ export default function VideoReel() {
               />
             ))}
           </div>
-          <div className="marquee-clone flex gap-5 lg:gap-8" aria-hidden="true">
-            {videos.map((video) => (
-              <ReelTile
-                key={`${video.id}-clone`}
-                video={video}
-                onSelect={open}
-                tabbable={false}
-                previewsPlaying={!userPaused && !active}
-              />
-            ))}
-          </div>
+          {/* Duplicate set for the seamless loop — client-only so the
+              prerendered HTML carries each piece of work exactly once. */}
+          {mounted && (
+            <div className="marquee-clone flex gap-5 lg:gap-8" aria-hidden="true">
+              {videos.map((video) => (
+                <ReelTile
+                  key={`${video.id}-clone`}
+                  video={video}
+                  onSelect={open}
+                  tabbable={false}
+                  previewsPlaying={!userPaused && !active}
+                  preload="none"
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

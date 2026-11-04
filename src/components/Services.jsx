@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '../lib/gsap.js';
-import { industries, process, services } from '../data/site.js';
+import { cta, industries, process, services } from '../data/site.js';
 import MagneticLink from './MagneticLink.jsx';
 
 export default function Services() {
@@ -76,11 +76,13 @@ export default function Services() {
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mb-16 grid gap-8 lg:grid-cols-12">
             <div data-reveal className="lg:col-span-5">
-              <p className="section-label mb-5">What we do</p>
-              <h2 className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
+              <h2 className="section-label mb-5 normal-case tracking-[0.25em]">
+                Video production, editing, social media management &amp; Meta ads
+              </h2>
+              <p className="text-balance font-display text-5xl font-normal leading-none text-ivory md:text-7xl">
                 Done-for-you{' '}
                 <span className="italic text-gold">content &amp; growth.</span>
-              </h2>
+              </p>
             </div>
             <p
               data-reveal
@@ -135,11 +137,13 @@ export default function Services() {
           <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
             <div data-reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <p className="section-label mb-5">How it works</p>
-                <h2 className="text-balance font-display text-4xl font-normal leading-tight text-ivory md:text-6xl">
+                <h2 className="section-label mb-5 normal-case tracking-[0.25em]">
+                  How our done-for-you content service works
+                </h2>
+                <p className="text-balance font-display text-4xl font-normal leading-tight text-ivory md:text-6xl">
                   Three steps. <br />
                   <span className="italic text-gold">Zero on your plate.</span>
-                </h2>
+                </p>
               </div>
               <div className="hidden w-64 lg:block">
                 <div className="h-px w-full bg-ivory/15">
@@ -180,10 +184,12 @@ export default function Services() {
       </section>
 
       {/* ───────────── Industries + mid-page CTA ───────────── */}
-      <section className="relative py-24 lg:py-32">
+      <section id="industries" className="relative py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div data-reveal className="grid gap-8 lg:grid-cols-12 lg:items-start">
-            <p className="section-label lg:col-span-3">Who we work with</p>
+            <h2 className="section-label normal-case tracking-[0.25em] lg:col-span-3">
+              Industries we shoot for across the GTA
+            </h2>
             <ul className="flex flex-wrap gap-x-8 gap-y-3 lg:col-span-9">
               {industries.map((industry) => (
                 <li
@@ -209,7 +215,7 @@ export default function Services() {
               className="btn-gold-solid min-h-touch shrink-0"
               data-cursor-label="Go"
             >
-              Book a shoot
+              {cta.primary}
               <span aria-hidden="true">→</span>
             </MagneticLink>
           </div>
