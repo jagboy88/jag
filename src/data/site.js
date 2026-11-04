@@ -8,6 +8,9 @@ export const site = {
   region: 'Greater Toronto Area',
   tagline: 'Content, social and ads for service businesses — done for you.',
   email: 'contact@impactmediagroup.ca',
+  // Cloudflare Turnstile site key — public by design (the secret lives
+  // only in the Worker as TURNSTILE_SECRET).
+  turnstileSiteKey: '0x4AAAAAAFy9rocYEJkZrU6q',
   instagram: {
     handle: '@impactmediagta',
     url: 'https://www.instagram.com/impactmediagta',

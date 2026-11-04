@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { cta, site } from '../data/site.js';
 import InstagramIcon from './icons/InstagramIcon.jsx';
+import Turnstile from './Turnstile.jsx';
 
 const projectTypes = [
   'Full package (shoot + edit + social + ads)',
@@ -55,6 +56,7 @@ export default function ContactForm() {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | submitting | sent | mailto | error
   const summaryRef = useRef(null);
+  const turnstileRef = useRef(null);
 
   const errorKeys = Object.keys(errors);
 
@@ -131,11 +133,17 @@ export default function ContactForm() {
     }
     setStatus('submitting');
     try {
-      const outcome = await send(form);
+      // Bot check: wait briefly for Turnstile to finish if it hasn't yet.
+      // If it can't produce a token (script blocked), send without one —
+      // the server decides, and the visitor sees the email fallback.
+      const turnstileToken = await turnstileRef.current?.getToken().catch(() => '');
+      const outcome = await send({ ...form, turnstileToken });
       setStatus(outcome);
       setForm(initialForm);
     } catch {
       setStatus('error');
+    } finally {
+      turnstileRef.current?.reset(); // tokens are single-use
     }
   };
 
@@ -408,7 +416,11 @@ export default function ContactForm() {
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-8">
+            <Turnstile ref={turnstileRef} siteKey={site.turnstileSiteKey} />
+          </div>
+
+          <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p
               role="status"
               aria-live="polite"
