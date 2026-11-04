@@ -25,7 +25,10 @@ const initialForm = {
   projectType: projectTypes[0],
   budget: budgets[1],
   message: '',
+  website: '', // honeypot — hidden from people, filled only by bots
 };
+
+const CONTACT_ENDPOINT = '/api/contact';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -50,7 +53,7 @@ const fieldLabels = {
 export default function ContactForm() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState('idle'); // idle | submitting | sent | error
+  const [status, setStatus] = useState('idle'); // idle | submitting | sent | mailto | error
   const summaryRef = useRef(null);
 
   const errorKeys = Object.keys(errors);
@@ -74,12 +77,8 @@ export default function ContactForm() {
     }
   };
 
-  /**
-   * Submission handler. Replace the body of `send()` with your own
-   * endpoint (Formspree, Resend, a serverless function, etc.). The
-   * mailto fallback keeps the form functional with zero backend.
-   */
-  const send = async (payload) => {
+  /** Last resort: hand the lead to the visitor's mail app. */
+  const openMailto = (payload) => {
     const subject = encodeURIComponent(
       `New inquiry — ${payload.projectType} (${payload.name})`,
     );
@@ -97,6 +96,31 @@ export default function ContactForm() {
     window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
   };
 
+  /**
+   * Posts the lead to the Cloudflare Worker (worker/), which sends an
+   * instant push notification. If the endpoint isn't reachable (not yet
+   * deployed, or offline) falls back to the visitor's mail app so no lead
+   * is lost. Returns 'sent' or 'mailto'; throws on a real server error.
+   */
+  const send = async (payload) => {
+    let res = null;
+    try {
+      res = await fetch(CONTACT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch {
+      res = null;
+    }
+    if (res?.ok) return 'sent';
+    if (!res || res.status === 404 || res.status === 405) {
+      openMailto(payload);
+      return 'mailto';
+    }
+    throw new Error(`Contact endpoint returned ${res.status}`);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const nextErrors = validate(form);
@@ -107,8 +131,8 @@ export default function ContactForm() {
     }
     setStatus('submitting');
     try {
-      await send(form);
-      setStatus('sent');
+      const outcome = await send(form);
+      setStatus(outcome);
       setForm(initialForm);
     } catch {
       setStatus('error');
@@ -186,6 +210,20 @@ export default function ContactForm() {
           className="border border-gold/30 p-8 lg:col-span-7 lg:p-12"
           noValidate
         >
+          {/* Honeypot: off-screen and skipped by keyboard and screen readers,
+              so only bots fill it. The Worker drops any lead that does. */}
+          <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+            <label htmlFor="website">Website</label>
+            <input
+              id="website"
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={form.website}
+              onChange={update('website')}
+            />
+          </div>
           {/* Error summary — focusable, links to each invalid field */}
           {errorKeys.length > 0 && (
             <div
@@ -378,7 +416,12 @@ export default function ContactForm() {
             >
               {status === 'sent' && (
                 <span className="text-gold">
-                  Your mail client should have opened — thank you.
+                  Got it — we&apos;ll reply within one business day.
+                </span>
+              )}
+              {status === 'mailto' && (
+                <span className="text-gold">
+                  Your mail app should have opened with your message — just hit send.
                 </span>
               )}
               {status === 'error' && (

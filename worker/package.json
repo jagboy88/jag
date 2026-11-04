@@ -1,0 +1,9 @@
+{
+  "name": "impact-contact-worker",
+  "private": true,
+  "type": "module",
+  "description": "Cloudflare Worker that receives the website contact form and sends a Pushover notification.",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  }
+}

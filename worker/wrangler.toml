@@ -1,0 +1,17 @@
+# Cloudflare Worker for the website contact form.
+# Deployed by .github/workflows/deploy-worker.yml — see worker/README.md.
+name = "impact-contact"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+# Serve only on the site's own domain at /api/*; no *.workers.dev URL.
+workers_dev = false
+routes = [
+  { pattern = "impactmediagroup.ca/api/*", zone_name = "impactmediagroup.ca" },
+]
+
+[vars]
+ALLOWED_ORIGINS = "https://impactmediagroup.ca,https://www.impactmediagroup.ca"
+
+[observability]
+enabled = true
