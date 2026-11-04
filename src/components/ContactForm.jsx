@@ -54,7 +54,8 @@ const fieldLabels = {
 export default function ContactForm() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState('idle'); // idle | submitting | sent | mailto | error
+  const [status, setStatus] = useState('idle'); // idle | verifying | submitting | sent | mailto | error | verify-failed
+  const [checkVisible, setCheckVisible] = useState(false);
   const summaryRef = useRef(null);
   const turnstileRef = useRef(null);
 
@@ -131,21 +132,30 @@ export default function ContactForm() {
       setStatus('idle');
       return;
     }
+    // 1. Security check runs only now, on submit. Most visitors pass
+    //    automatically; some are asked to tick the box. Their answers stay
+    //    in the form if it doesn't complete.
+    setStatus('verifying');
+    let turnstileToken;
+    try {
+      turnstileToken = await turnstileRef.current.run();
+    } catch {
+      setStatus('verify-failed');
+      return;
+    }
+
+    // 2. Send the lead with the single-use token.
     setStatus('submitting');
     try {
-      // Bot check: wait briefly for Turnstile to finish if it hasn't yet.
-      // If it can't produce a token (script blocked), send without one —
-      // the server decides, and the visitor sees the email fallback.
-      const turnstileToken = await turnstileRef.current?.getToken().catch(() => '');
       const outcome = await send({ ...form, turnstileToken });
       setStatus(outcome);
       setForm(initialForm);
     } catch {
       setStatus('error');
-    } finally {
-      turnstileRef.current?.reset(); // tokens are single-use
     }
   };
+
+  const busy = status === 'verifying' || status === 'submitting';
 
   const describedBy = (field) =>
     errors[field] ? `${field}-error` : undefined;
@@ -416,11 +426,19 @@ export default function ContactForm() {
             </div>
           </div>
 
-          <div className="mt-8">
-            <Turnstile ref={turnstileRef} siteKey={site.turnstileSiteKey} />
+          {/* Security check slot: collapsed until the visitor submits, then
+              shows Cloudflare's box in its own space. */}
+          <div
+            className={checkVisible ? 'mt-8 flex min-h-[65px] flex-col gap-3' : 'h-0 overflow-hidden'}
+            aria-hidden={!checkVisible}
+          >
+            {checkVisible && (
+              <p className="font-sans text-[0.6rem] uppercase tracking-luxe text-gold">Quick security check</p>
+            )}
+            <Turnstile ref={turnstileRef} siteKey={site.turnstileSiteKey} onVisibleChange={setCheckVisible} />
           </div>
 
-          <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p
               role="status"
               aria-live="polite"
@@ -441,17 +459,36 @@ export default function ContactForm() {
                   Something went wrong. Email us directly at {site.email}.
                 </span>
               )}
+              {status === 'verify-failed' && (
+                <span className="text-gold">
+                  The security check didn&apos;t finish. Tap the button to try again, or email us at {site.email}.
+                </span>
+              )}
               {status === 'idle' && '* Required fields'}
+              {status === 'verifying' && 'Checking you’re human — tick the box if it appears.'}
               {status === 'submitting' && 'Sending…'}
             </p>
 
             <button
               type="submit"
-              disabled={status === 'submitting'}
-              className="btn-gold-solid min-h-touch disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={busy}
+              aria-busy={busy}
+              className="btn-gold-solid min-h-touch disabled:cursor-not-allowed disabled:opacity-80"
             >
-              {cta.submit}
-              <span aria-hidden="true">→</span>
+              {busy ? (
+                <>
+                  <span
+                    aria-hidden="true"
+                    className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-jet/30 border-t-jet"
+                  />
+                  {status === 'verifying' ? 'Verifying…' : 'Sending…'}
+                </>
+              ) : (
+                <>
+                  {cta.submit}
+                  <span aria-hidden="true">→</span>
+                </>
+              )}
             </button>
           </div>
         </motion.form>

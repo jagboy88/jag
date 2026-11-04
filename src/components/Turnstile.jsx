@@ -25,73 +25,89 @@ function loadTurnstile() {
 }
 
 /**
- * Invisible-unless-needed Cloudflare Turnstile check.
+ * Cloudflare Turnstile, run on demand.
  *
- * Exposes `getToken()` (resolves with a fresh token, waiting up to
- * `timeoutMs` for the challenge to finish) and `reset()` (tokens are
- * single-use, so call it after every submission).
+ * The widget is prepared on mount but does nothing until `run()` is called
+ * (on form submit). It then appears, verifies the visitor — automatically
+ * for most people, with a click when Cloudflare asks for one — and resolves
+ * with a single-use token. Nothing runs or refreshes in the background, so
+ * the widget never flickers while someone is filling in the form.
+ *
+ * `onVisibleChange(true|false)` tells the parent when to show the slot.
  */
-const Turnstile = forwardRef(function Turnstile({ siteKey, timeoutMs = 8000 }, ref) {
+const Turnstile = forwardRef(function Turnstile({ siteKey, onVisibleChange }, ref) {
   const container = useRef(null);
   const widgetId = useRef(null);
-  const token = useRef('');
-  const waiters = useRef([]);
+  const pending = useRef(null); // { resolve, reject, timer }
+  const used = useRef(false);
+  const visibleCb = useRef(onVisibleChange);
+  visibleCb.current = onVisibleChange;
 
-  const settle = (value) => {
-    token.current = value;
-    if (value) {
-      waiters.current.forEach((w) => w.resolve(value));
-      waiters.current = [];
+  const settle = (fn, value) => {
+    const p = pending.current;
+    if (!p) return;
+    clearTimeout(p.timer);
+    pending.current = null;
+    fn === 'resolve' ? p.resolve(value) : p.reject(value);
+  };
+
+  // Prepare (render, but don't run) the widget once the script is ready.
+  const ensureWidget = async () => {
+    const ts = await loadTurnstile();
+    if (widgetId.current === null && container.current) {
+      widgetId.current = ts.render(container.current, {
+        sitekey: siteKey,
+        theme: 'dark',
+        action: 'contact',
+        execution: 'execute', // only run when run() is called
+        appearance: 'execute', // only visible while running
+        'refresh-expired': 'never', // tokens are used immediately; never auto-refresh
+        callback: (token) => settle('resolve', token),
+        'error-callback': () => settle('reject', new Error('Turnstile error')),
+        'timeout-callback': () => settle('reject', new Error('Turnstile timed out')),
+        'expired-callback': () => settle('reject', new Error('Turnstile expired')),
+      });
     }
+    return ts;
   };
 
   useEffect(() => {
-    let cancelled = false;
-    loadTurnstile()
-      .then((ts) => {
-        if (cancelled || !container.current || widgetId.current !== null) return;
-        widgetId.current = ts.render(container.current, {
-          sitekey: siteKey,
-          theme: 'dark',
-          appearance: 'interaction-only', // shows a box only if Cloudflare needs the visitor to click
-          action: 'contact',
-          callback: (t) => settle(t),
-          'expired-callback': () => settle(''),
-          'error-callback': () => settle(''),
-        });
-      })
-      .catch(() => {
-        // Script blocked (ad-blocker, offline). getToken() will time out and
-        // the form shows its normal error with the email address.
-      });
+    ensureWidget().catch(() => {
+      // Script blocked (ad-blocker, offline). run() will reject and the form
+      // shows its normal error with the email address.
+    });
     return () => {
-      cancelled = true;
+      if (pending.current) settle('reject', new Error('unmounted'));
       if (widgetId.current !== null && window.turnstile) {
         window.turnstile.remove(widgetId.current);
         widgetId.current = null;
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [siteKey]);
 
   useImperativeHandle(ref, () => ({
-    getToken() {
-      if (token.current) return Promise.resolve(token.current);
-      return new Promise((resolve, reject) => {
-        const waiter = { resolve };
-        waiters.current.push(waiter);
-        setTimeout(() => {
-          waiters.current = waiters.current.filter((w) => w !== waiter);
-          reject(new Error('Turnstile timed out'));
-        }, timeoutMs);
-      });
-    },
-    reset() {
-      token.current = '';
-      if (widgetId.current !== null && window.turnstile) window.turnstile.reset(widgetId.current);
+    /** Verify the visitor. Resolves with a token; rejects on error or timeout. */
+    async run({ timeoutMs = 90000 } = {}) {
+      const ts = await ensureWidget();
+      if (pending.current) settle('reject', new Error('superseded'));
+      // Tokens are single-use: clear the previous run before starting again.
+      if (used.current) ts.reset(widgetId.current);
+      used.current = true;
+      visibleCb.current?.(true);
+      try {
+        return await new Promise((resolve, reject) => {
+          const timer = setTimeout(() => settle('reject', new Error('Turnstile timed out')), timeoutMs);
+          pending.current = { resolve, reject, timer };
+          ts.execute(widgetId.current);
+        });
+      } finally {
+        visibleCb.current?.(false);
+      }
     },
   }));
 
-  return <div ref={container} className="min-h-0" />;
+  return <div ref={container} />;
 });
 
 export default Turnstile;
